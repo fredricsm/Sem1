@@ -20,6 +20,5 @@ public class BDDiamond extends AbstractBDFallingObject {
 	public Color getColor() {
 		return Color.YELLOW;
 	}
-	
 
 }

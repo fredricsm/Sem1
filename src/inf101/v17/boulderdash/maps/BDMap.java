@@ -3,19 +3,25 @@ package inf101.v17.boulderdash.maps;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import inf101.v17.boulderdash.Direction;
 import inf101.v17.boulderdash.IllegalMoveException;
 import inf101.v17.boulderdash.Position;
+import inf101.v17.boulderdash.bdobjects.AbstractBDMovingObject;
 import inf101.v17.boulderdash.bdobjects.BDBug;
 import inf101.v17.boulderdash.bdobjects.BDDiamond;
 import inf101.v17.boulderdash.bdobjects.BDEmpty;
 import inf101.v17.boulderdash.bdobjects.BDPlayer;
+import inf101.v17.boulderdash.bdobjects.BDRock;
 import inf101.v17.boulderdash.bdobjects.BDSand;
 import inf101.v17.boulderdash.bdobjects.BDWall;
 import inf101.v17.boulderdash.bdobjects.IBDObject;
 import inf101.v17.datastructures.IGrid;
 import inf101.v17.datastructures.MyGrid;
+import javafx.geometry.Pos;
 
 /**
  * An implementation of a map
@@ -34,6 +40,7 @@ public class BDMap {
 	 * frequently.
 	 */
 	protected BDPlayer player;
+	Map<IBDObject, Position> posOverview = new HashMap<>();
 
 	/**
 	 * Main constructor of this class.
@@ -75,11 +82,12 @@ public class BDMap {
 	public boolean canGo(int x, int y) {
 		if (!isValidPosition(x, y)) {
 			return false;
-		}
-		if (grid.get(x, y) instanceof BDWall) {
+		} else if (grid.get(x, y) instanceof BDWall) {
 			return false;
 		}
+
 		return true;
+
 	}
 
 	/**
@@ -155,8 +163,13 @@ public class BDMap {
 			return new BDSand(this);
 		} else if (c == ' ') {
 			return new BDEmpty(this);
+		} else if (c == 'd') {
+			return new BDDiamond(this);
 		}
 
+		else if (c == 'r') {
+			return new BDRock(this);
+		}
 		System.err.println("Illegal character in map definition at (" + x + ", " + y + "): '" + c + "'");
 		return new BDEmpty(this);
 		// alternatively, throw an exception
@@ -244,8 +257,23 @@ public class BDMap {
 	 * @return
 	 */
 	public Position getPosition(IBDObject object) {
-		// TODO
-		
+
+		for (int x = 0; x < grid.getWidth(); x++) {
+			for (int y = 0; y < grid.getHeight(); y++) {
+				if (grid.get(x, y) == object) {
+					Position p = new Position(x, y);
+					return p;
+
+					// Vil vel egentlig returnerer koordinatene på gitt grid
+					// posisjon og ikke objektet?
+					// Når en kan returnere koordinatene kan en bruke disse da
+					// som value i hashmap, for så å returnere dette?
+					// Hvor tildeler man verdiene til HashMap? I fillgrid?
+				}
+			}
+
+		}
+
 		return null;
 	}
 
@@ -283,8 +311,14 @@ public class BDMap {
 		grid.set(x, y, element);
 	}
 
+	// setter kun step metoden.
 	public void step() {
-		// TODO
-		
+
+		for (int x = 0; x < getWidth(); x++) {
+			for (int y = 0; y < getHeight(); y++) {
+				grid.get(x, y).step();
+			}
+		}
+
 	}
 }

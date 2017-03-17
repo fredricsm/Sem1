@@ -68,5 +68,4 @@ public abstract class AbstractBDMovingObject extends AbstractBDObject implements
 		this.nextPos = null;
 	}
 
-	
 }

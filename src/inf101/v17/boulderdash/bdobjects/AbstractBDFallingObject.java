@@ -28,7 +28,7 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 	 * A counter to keep track when the falling should be executed next, see the
 	 * WAIT constant.
 	 */
-	protected int fallingTimeWaited = 0;
+	protected double fallingTimeWaited = 0;
 
 	public AbstractBDFallingObject(BDMap owner) {
 		super(owner);
@@ -66,7 +66,7 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 				} else {
 					// start falling if tile below is empty
 					falling = under instanceof BDEmpty;
-					fallingTimeWaited = 1;
+					fallingTimeWaited = 0.5;
 				}
 			} catch (IllegalMoveException e) {
 				// This should never happen.

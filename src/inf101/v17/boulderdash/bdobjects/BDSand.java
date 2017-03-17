@@ -19,7 +19,7 @@ public class BDSand extends AbstractBDObject {
 
 	@Override
 	public Color getColor() {
-		return Color.LIGHTGRAY;
+		return Color.SANDYBROWN;
 	}
 
 	@Override
