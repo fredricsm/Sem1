@@ -1,7 +1,9 @@
 package inf101.v17.boulderdash.bdobjects;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import inf101.v17.boulderdash.maps.BDMap;
 
 /**
@@ -12,13 +14,17 @@ import inf101.v17.boulderdash.maps.BDMap;
  */
 public class BDDiamond extends AbstractBDFallingObject {
 
+	Image image  = new Image(getClass().getResourceAsStream("../bdobjects/sprites/hud_gem_yellow.png"));
+	ImagePattern img = new ImagePattern(image, 1, 1, 1, 1, true);
+
+	
 	public BDDiamond(BDMap owner) {
 		super(owner);
 	}
 
 	@Override
-	public Color getColor() {
-		return Color.YELLOW;
+	public Paint getColor() {
+		return img;
 	}
 
 }

@@ -1,6 +1,10 @@
 package inf101.v17.boulderdash.bdobjects;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,6 +40,13 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	// Counts the number of skipped steps.
 	protected int movedSince = 0;
 
+	//https://www.google.no/search?q=monster+sprite&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiQpY-EyOnSAhUmQZoKHQf4AcoQ_AUICCgB&biw=1517&bih=654#tbm=isch&q=slug+monster+pixel&*&imgrc=QbZ3-emFCjfU_M:
+	private static final Image image  = new Image(BDWall.class.getResourceAsStream("../bdobjects/sprites/Slug.gif"));
+	ImagePattern img = new ImagePattern(image);
+
+	
+	
+	
 	/**
 	 * This field contains the sequence of moves the bug performs repeatedly.
 	 * Can be anything, but a logical set up happens in the
@@ -90,8 +101,8 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	}
 
 	@Override
-	public Color getColor() {
-		return Color.GREEN;
+	public Paint getColor() {
+		return img;
 	}
 
 	/**
@@ -162,6 +173,8 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	@Override
 	public void step() {
 		// Only execute the bug's movement after it had its' pause.
+		//Sets pause so that it will not kill player immediatly after its been freed.
+		pause=6;
 		if (movedSince == pause) {
 			// Set the next position according to the path
 			setNextPos();

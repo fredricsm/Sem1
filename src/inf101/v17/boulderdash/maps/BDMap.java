@@ -22,6 +22,7 @@ import inf101.v17.boulderdash.bdobjects.IBDObject;
 import inf101.v17.datastructures.IGrid;
 import inf101.v17.datastructures.MyGrid;
 import javafx.geometry.Pos;
+import javafx.scene.media.AudioClip;
 
 /**
  * An implementation of a map
@@ -30,7 +31,10 @@ import javafx.geometry.Pos;
  *
  */
 public class BDMap {
+	AudioClip ambiance = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Cavern.wav").toString());;
 
+	AudioClip noCanGo = new AudioClip(getClass().getResource("../bdobjects/soundEffects/LowFQThump.wav").toString());;
+	
 	/**
 	 * Stores the data of the map
 	 */
@@ -59,6 +63,10 @@ public class BDMap {
 		grid = new MyGrid<IBDObject>(map.getWidth(), map.getHeight(), null);
 		this.player = new BDPlayer(this);
 		fillGrid(map);
+		//Sets the ambiance sound in the mine
+		ambiance.setCycleCount(5);
+		ambiance.setVolume(0.5);
+		ambiance.play();
 	}
 
 	/**
@@ -81,8 +89,13 @@ public class BDMap {
 	 */
 	public boolean canGo(int x, int y) {
 		if (!isValidPosition(x, y)) {
+			noCanGo.setVolume(0.3);
+			noCanGo.play();
 			return false;
+			
 		} else if (grid.get(x, y) instanceof BDWall) {
+			noCanGo.setVolume(0.3);
+			noCanGo.play();
 			return false;
 		}
 

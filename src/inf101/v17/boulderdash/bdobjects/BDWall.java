@@ -1,6 +1,13 @@
 package inf101.v17.boulderdash.bdobjects;
 
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
+
+
+
+
 
 import inf101.v17.boulderdash.maps.BDMap;
 
@@ -11,14 +18,31 @@ import inf101.v17.boulderdash.maps.BDMap;
  *
  */
 public class BDWall extends AbstractBDObject {
+//cannot instanciate image betyr at klassen ikke er importert.
+	
+	
+	//Tiles from http://www.indiedb.com/games/chesslike-adventures-in-chess/images/tile-themes-sprite-sheet
+	private static final Image image  = new Image(BDWall.class.getResourceAsStream("../bdobjects/sprites/master-tileset.png"));
+	ImagePattern img = new ImagePattern(image, 10, 5, 10, 5, true);
 
+	
 	public BDWall(BDMap owner) {
 		super(owner);
+
+
 	}
 
+	
+		
+
+	
+	
 	@Override
-	public Color getColor() {
-		return Color.BLACK;
+	public Paint getColor() {
+		
+		
+			return img;
+		
 	}
 
 	@Override

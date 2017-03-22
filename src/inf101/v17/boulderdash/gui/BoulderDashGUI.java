@@ -37,7 +37,7 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 	/**
 	 * Runs the program on a given map.
 	 *
-	 * @param map
+	 * @param map00
 	 */
 	public static void run(BDMap map) {
 		theMap = map;

@@ -4,6 +4,7 @@ import inf101.v17.boulderdash.Direction;
 import inf101.v17.boulderdash.IllegalMoveException;
 import inf101.v17.boulderdash.Position;
 import inf101.v17.boulderdash.maps.BDMap;
+import javafx.scene.media.AudioClip;
 
 /**
  * Contains most of the logic associated with objects that fall such as rocks
@@ -20,9 +21,12 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 	 * make sure that the player doesn't get killed immediately when walking
 	 * under a rock.
 	 */
-	protected static final int WAIT = 3;
+	protected static final double WAIT = 0.5;
 
 	protected boolean falling = false;
+
+	AudioClip rockFalling = new AudioClip(getClass().getResource("../bdobjects/soundEffects/BoulderImpact.wav").toString());;
+	AudioClip gemFalling = new AudioClip(getClass().getResource("../bdobjects/soundEffects/GemPling.wav").toString());;
 
 	/**
 	 * A counter to keep track when the falling should be executed next, see the
@@ -39,6 +43,8 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 	 * it can fall, depending on the object in the tile underneath it and if so,
 	 * tries to prepare the move.
 	 */
+
+
 	public void fall() {
 		// Wait until its time to fall
 		if (falling && fallingTimeWaited < WAIT) {
@@ -53,19 +59,59 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 		if (pos.getY() > 0) {
 			try {
 				// Get the object in the tile below.
+				
+				
 				Position below = pos.moveDirection(Direction.SOUTH);
 				IBDObject under = owner.get(below);
+				IBDObject currentObject = owner.get(getPosition());
+				
+				int x = currentObject.getX();
+				int y = currentObject.getY();
+				
+				IBDObject diaRight = owner.get(x+1, y-1);
+				IBDObject right = owner.get(x+1, y);
 
+				IBDObject diaLeft = owner.get(x-1, y-1);
+				IBDObject left = owner.get(x-1, y);
+				
 				if (falling) {
 					// fall one step if tile below is empty or killable
 					if (under instanceof BDEmpty || under instanceof IBDKillable) {
 						prepareMoveTo(Direction.SOUTH);
-					} else {
-						falling = false;
+			
 					}
-				} else {
+					
+					
+					else {
+						
+						falling = false;
+						//The sounds made by gems and rock falling down
+						if(currentObject instanceof BDRock){
+							rockFalling.setVolume(0.5);
+							rockFalling.play();	
+						}
+						
+						else if(currentObject instanceof BDDiamond){
+							gemFalling.setVolume(0.5);
+							gemFalling.play();
+						}
+					}
+				} 
+				else if(under instanceof BDRock || under instanceof BDWall || under instanceof BDDiamond){
+					
+					if(diaRight instanceof BDEmpty && right instanceof BDEmpty){
+					prepareMoveTo(Direction.EAST);
+					}
+					else if(diaLeft instanceof BDEmpty && left instanceof BDEmpty){
+						prepareMoveTo(Direction.WEST);
+
+					}
+				
+				}
+				else {
 					// start falling if tile below is empty
-					falling = under instanceof BDEmpty;
+					
+					falling = (under instanceof BDEmpty);
 					fallingTimeWaited = 0.5;
 				}
 			} catch (IllegalMoveException e) {
@@ -76,9 +122,14 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 		}
 	}
 
+
+	
+	
 	@Override
 	public void step() {
 		// (Try to) fall if possible
+		
+		
 		fall();
 		super.step();
 	}

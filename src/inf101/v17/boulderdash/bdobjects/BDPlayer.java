@@ -1,8 +1,11 @@
 package inf101.v17.boulderdash.bdobjects;
 
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-
+import javafx.scene.media.AudioClip;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
+import javafx.scene.transform.Scale;
 import inf101.v17.boulderdash.Direction;
 import inf101.v17.boulderdash.IllegalMoveException;
 import inf101.v17.boulderdash.Position;
@@ -16,6 +19,33 @@ import inf101.v17.boulderdash.maps.BDMap;
  */
 public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
+	Image image  = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/Adventure.gif"));
+
+	ImagePattern player = new ImagePattern(image,1,1,1,1,true);
+	
+	AudioClip moveSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/slime4.wav").toString());;
+	AudioClip diamondSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/coin.wav").toString());;
+	AudioClip stoneSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/ConcreteBlockMoving.wav").toString());;
+	AudioClip splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());;
+
+// Hvordan returnere et nytt bilde for hvert tastetrykk?  
+
+//	public Paint runner(KeyCode key){
+//	
+//	int x = 0;
+//	int y = 0;
+//	
+//	ImagePattern img = new ImagePattern(image,x,y,2,1,true);
+//	
+//	if(key == KeyCode.LEFT){
+//	
+//	}
+//
+//	
+//	return img;
+//}
+//	
+	
 	/**
 	 * Is the player still alive?
 	 */
@@ -36,8 +66,9 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	}
 
 	@Override
-	public Color getColor() {
-		return Color.BLUE;
+	public Paint getColor() {
+				
+		return player;
 	}
 
 	/**
@@ -63,6 +94,8 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	@Override
 	public void kill() {
+		splat.setVolume(0.3);
+		splat.play();
 		this.alive = false;
 	}
 
@@ -79,6 +112,8 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	public void step() {
 
 		if (askedToGo != null) {
+			
+			
 			Position p = getNextPosition();
 			Position nextpos = p.moveDirection(askedToGo);
 			IBDObject targetObj = owner.get(nextpos);
@@ -91,13 +126,28 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 						if (((BDRock) targetObj).push(askedToGo)) {
 							prepareMoveTo(askedToGo);
+							stoneSound.setRate(2);
+							stoneSound.setVolume(0.7);
+							stoneSound.play();
+						
 						}
-					} else if (targetObj instanceof BDSand) {
+					} 
+					
+					else if (targetObj instanceof BDSand) {
 						prepareMoveTo(askedToGo);
-					} else if (targetObj instanceof BDEmpty) {
+						moveSound.setVolume(0.1);
+						moveSound.play();
+					} 
+					
+					else if (targetObj instanceof BDEmpty) {
 						prepareMoveTo(askedToGo);
-					} else if (targetObj instanceof BDDiamond) {
+						moveSound.setVolume(0.1);
+						moveSound.play();
+					}
+					
+					else if (targetObj instanceof BDDiamond) {
 						prepareMoveTo(askedToGo);
+						diamondSound.play();
 					}
 
 				} catch (IllegalMoveException e) {
@@ -107,7 +157,9 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 				IBDObject obj = owner.get(getNextPosition());
 				if (obj instanceof BDDiamond) {
+			
 					diamondCnt += 1;
+					
 				}
 
 			}

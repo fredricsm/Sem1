@@ -1,7 +1,10 @@
 package inf101.v17.boulderdash.bdobjects;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import inf101.v17.boulderdash.maps.BDMap;
 
 /**
@@ -12,15 +15,23 @@ import inf101.v17.boulderdash.maps.BDMap;
  *
  */
 public class BDSand extends AbstractBDObject {
-
+	
+	//Tiles from http://www.indiedb.com/games/chesslike-adventures-in-chess/images/tile-themes-sprite-sheet
+	private static final Image image = new Image(BDSand.class.getResourceAsStream("../bdobjects/sprites/master-tileset.png"));
+	ImagePattern img = new ImagePattern(image, 4, 4, 10, 5, true);
+	
+	
 	public BDSand(BDMap owner) {
 		super(owner);
 	}
 
 	@Override
-	public Color getColor() {
-		return Color.SANDYBROWN;
+	public Paint getColor() {
+			
+			return img;
 	}
+
+
 
 	@Override
 	public void step() {
