@@ -92,17 +92,18 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 						}
 						
 						else if(currentObject instanceof BDDiamond){
-							gemFalling.setVolume(0.5);
+							gemFalling.setVolume(0.1);
 							gemFalling.play();
 						}
 					}
 				} 
 				else if(under instanceof BDRock || under instanceof BDWall || under instanceof BDDiamond){
 					
-					if(diaRight instanceof BDEmpty && right instanceof BDEmpty){
-					prepareMoveTo(Direction.EAST);
+					if((diaRight instanceof BDEmpty && right instanceof BDEmpty) || diaRight instanceof BDPlayer && right instanceof BDEmpty){
+						prepareMoveTo(Direction.EAST);
 					}
-					else if(diaLeft instanceof BDEmpty && left instanceof BDEmpty){
+					else if(diaLeft instanceof BDEmpty && left instanceof BDEmpty || diaLeft instanceof BDPlayer && left instanceof BDEmpty){
+					
 						prepareMoveTo(Direction.WEST);
 
 					}

@@ -15,23 +15,21 @@ import inf101.v17.boulderdash.maps.BDMap;
  *
  */
 public class BDSand extends AbstractBDObject {
-	
-	//Tiles from http://www.indiedb.com/games/chesslike-adventures-in-chess/images/tile-themes-sprite-sheet
-	private static final Image image = new Image(BDSand.class.getResourceAsStream("../bdobjects/sprites/master-tileset.png"));
-	ImagePattern img = new ImagePattern(image, 4, 4, 10, 5, true);
-	
-	
+
+	// Tiles from
+	//http://s444.photobucket.com/user/grandmadeb_rmvx/media/Granny_s%20Little%20Edits/VineyardA4RTPEditGrandmaDeb_zps4530c11d.png.html
+	private static final Image image = new Image(BDSand.class.getResourceAsStream("../bdobjects/sprites/SpriteTile.png"));
+	ImagePattern img = new ImagePattern(image, 4, 2, 8, 8, true);
+
 	public BDSand(BDMap owner) {
 		super(owner);
 	}
 
 	@Override
 	public Paint getColor() {
-			
-			return img;
+
+		return img;
 	}
-
-
 
 	@Override
 	public void step() {

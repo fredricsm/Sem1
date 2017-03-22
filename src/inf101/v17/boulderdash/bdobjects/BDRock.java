@@ -44,7 +44,7 @@ public class BDRock extends AbstractBDFallingObject {
 
 		if (dir == Direction.EAST || dir == Direction.WEST) {
 			Position nextpos = pos.moveDirection(dir);
-			if (owner.canGo(nextpos) && owner.get(nextpos) instanceof BDEmpty) {
+			if (owner.canGo(nextpos) && owner.get(nextpos) instanceof BDEmpty ) {
 				try {
 					prepareMove(nextpos);
 					step();

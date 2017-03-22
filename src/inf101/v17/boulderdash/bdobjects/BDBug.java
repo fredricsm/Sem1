@@ -1,6 +1,7 @@
 package inf101.v17.boulderdash.bdobjects;
 
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
@@ -40,13 +41,12 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	// Counts the number of skipped steps.
 	protected int movedSince = 0;
 
-	//https://www.google.no/search?q=monster+sprite&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiQpY-EyOnSAhUmQZoKHQf4AcoQ_AUICCgB&biw=1517&bih=654#tbm=isch&q=slug+monster+pixel&*&imgrc=QbZ3-emFCjfU_M:
-	private static final Image image  = new Image(BDWall.class.getResourceAsStream("../bdobjects/sprites/Slug.gif"));
-	ImagePattern img = new ImagePattern(image);
+	// https://www.google.no/search?q=monster+sprite&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiQpY-EyOnSAhUmQZoKHQf4AcoQ_AUICCgB&biw=1517&bih=654#tbm=isch&q=slug+monster+pixel&*&imgrc=QbZ3-emFCjfU_M:
 
-	
-	
-	
+	private static final Image image = new Image(BDWall.class.getResourceAsStream("../bdobjects/sprites/SlimeGif.gif"));
+	ImagePattern img = new ImagePattern(image);
+	AudioClip splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());;
+
 	/**
 	 * This field contains the sequence of moves the bug performs repeatedly.
 	 * Can be anything, but a logical set up happens in the
@@ -65,7 +65,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 * Determines how far the bug moves when path is set up using the
 	 * initTrajectory()-method.
 	 */
-	protected int radius = 1;
+	protected int radius = 3;
 
 	/**
 	 * The standard constructor, where pause is set to MIN_PAUSE and radius to
@@ -112,8 +112,10 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 * @throws IllegalMoveException
 	 */
 	private void initTrajectory() throws IllegalMoveException {
-		path = new ArrayList<>(4 * radius);
+		path = new ArrayList<>(1 * radius);
+
 		path.add(initialPos);
+
 		Position nextPos = initialPos;
 		for (int i = 0; i < radius; i++) {
 			nextPos = nextPos.moveDirection(Direction.WEST);
@@ -138,6 +140,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 		// If a bug is killed it turns into a set of diamonds. Find the
 		// DEATH_DIAMONDS nearest
 		// empty positions in the map and fill them with diamonds.
+		splat.play();
 		Collection<Position> toDiamonds = owner.getNearestEmpty(owner.getPosition(this), DEATH_DIAMONDS);
 		for (Position p : toDiamonds) {
 			owner.set(p.getX(), p.getY(), new BDDiamond(owner));
@@ -173,8 +176,9 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	@Override
 	public void step() {
 		// Only execute the bug's movement after it had its' pause.
-		//Sets pause so that it will not kill player immediatly after its been freed.
-		pause=6;
+		// Sets pause so that it will not kill player immediatly after its been
+		// freed.
+		pause = 4;
 		if (movedSince == pause) {
 			// Set the next position according to the path
 			setNextPos();
@@ -190,7 +194,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 		}
 		super.step();
 	}
-	
+
 	@Override
 	public boolean isKillable() {
 		return true;

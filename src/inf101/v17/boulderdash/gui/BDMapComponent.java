@@ -16,7 +16,7 @@ import javafx.scene.paint.ImagePattern;
 public class BDMapComponent extends Canvas {
 
 	// parameters on the sizes of the cells.
-	private final int padding = 1;
+	private final double padding = 1;
 
 	// The map to be painted
 	private BDMap map;

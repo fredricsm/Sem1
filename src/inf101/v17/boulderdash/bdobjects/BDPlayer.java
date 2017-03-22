@@ -19,33 +19,17 @@ import inf101.v17.boulderdash.maps.BDMap;
  */
 public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
-	Image image  = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/Adventure.gif"));
+	Image imageR = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan.png"));
+	Image imageL = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan2.png"));
+	ImagePattern player = new ImagePattern(imageR, 0, 0, 8, 3, true);
 
-	ImagePattern player = new ImagePattern(image,1,1,1,1,true);
-	
 	AudioClip moveSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/slime4.wav").toString());;
 	AudioClip diamondSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/coin.wav").toString());;
 	AudioClip stoneSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/ConcreteBlockMoving.wav").toString());;
 	AudioClip splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());;
 
-// Hvordan returnere et nytt bilde for hvert tastetrykk?  
+	// Hvordan returnere et nytt bilde for hvert tastetrykk?
 
-//	public Paint runner(KeyCode key){
-//	
-//	int x = 0;
-//	int y = 0;
-//	
-//	ImagePattern img = new ImagePattern(image,x,y,2,1,true);
-//	
-//	if(key == KeyCode.LEFT){
-//	
-//	}
-//
-//	
-//	return img;
-//}
-//	
-	
 	/**
 	 * Is the player still alive?
 	 */
@@ -67,8 +51,8 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	@Override
 	public Paint getColor() {
-				
 		return player;
+
 	}
 
 	/**
@@ -78,18 +62,29 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		return alive;
 	}
 
+	/**
+	 * Will move character in the direction corresponding to key pressed and
+	 * update sprite image with correct image.
+	 */
 	public void keyPressed(KeyCode key) {
 
 		if (key == KeyCode.LEFT) {
+
 			askedToGo = Direction.WEST;
-		} else if (key == KeyCode.RIGHT) {
-			askedToGo = Direction.EAST;
-		} else if (key == KeyCode.UP) {
-			askedToGo = Direction.NORTH;
-		} else if (key == KeyCode.DOWN) {
-			askedToGo = Direction.SOUTH;
+			player = new ImagePattern(imageL, 4, 3, 8, 3, true);
 		}
 
+		else if (key == KeyCode.RIGHT) {
+			askedToGo = Direction.EAST;
+			player = new ImagePattern(imageR, 5, 3, 8, 3, true);
+		} else if (key == KeyCode.UP) {
+			askedToGo = Direction.NORTH;
+			player = new ImagePattern(imageL, 1, 4, 8, 3, true);
+		} else if (key == KeyCode.DOWN) {
+			askedToGo = Direction.SOUTH;
+			player = new ImagePattern(imageL, 7, 3, 8, 3, true);
+
+		}
 	}
 
 	@Override
@@ -97,6 +92,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		splat.setVolume(0.3);
 		splat.play();
 		this.alive = false;
+
 	}
 
 	/**
@@ -112,8 +108,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	public void step() {
 
 		if (askedToGo != null) {
-			
-			
+
 			Position p = getNextPosition();
 			Position nextpos = p.moveDirection(askedToGo);
 			IBDObject targetObj = owner.get(nextpos);
@@ -129,22 +124,22 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 							stoneSound.setRate(2);
 							stoneSound.setVolume(0.7);
 							stoneSound.play();
-						
+
 						}
-					} 
-					
+					}
+
 					else if (targetObj instanceof BDSand) {
 						prepareMoveTo(askedToGo);
 						moveSound.setVolume(0.1);
 						moveSound.play();
-					} 
-					
+					}
+
 					else if (targetObj instanceof BDEmpty) {
 						prepareMoveTo(askedToGo);
 						moveSound.setVolume(0.1);
 						moveSound.play();
 					}
-					
+
 					else if (targetObj instanceof BDDiamond) {
 						prepareMoveTo(askedToGo);
 						diamondSound.play();
@@ -157,9 +152,9 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 				IBDObject obj = owner.get(getNextPosition());
 				if (obj instanceof BDDiamond) {
-			
+
 					diamondCnt += 1;
-					
+
 				}
 
 			}
