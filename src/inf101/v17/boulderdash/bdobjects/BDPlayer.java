@@ -28,10 +28,10 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	private static AudioClip stoneSound;
 	private static AudioClip splat;
 	
-	 int countL = 1;
-	 int countR = 1;
-	 int countU = 1;
-	 int countD = 1;
+	private int countL = 1;
+	private int countR = 1;
+	private int countU = 1;
+	private int countD = 1;
 
 
 	
@@ -200,8 +200,11 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	@Override
 	public void kill() {
-		splat.setVolume(0.3);
+		if(splat==null){
+			setProperties();
+			}
 		splat.play();
+
 		this.alive = false;
 
 	}

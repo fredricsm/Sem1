@@ -71,10 +71,27 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 				//Implementation of rock slide functionality. HVORDAN FÅ DETTE I EGEN METODE OG KALLE DET I ARGUMENTENE?
 				int x = currentObject.getX();
 				int y = currentObject.getY();
-				IBDObject diaRight = owner.get(x+1, y-1);
-				IBDObject right = owner.get(x+1, y);
-				IBDObject diaLeft = owner.get(x-1, y-1);
-				IBDObject left = owner.get(x-1, y);
+				IBDObject left = null;
+				IBDObject diaLeft= null;
+				IBDObject right = null;
+				IBDObject diaRight = null;
+				
+				
+				if(x<getMap().getWidth()){
+				diaRight = owner.get(x+1, y-1);
+				
+				}
+				if(x<getMap().getWidth()){
+				right = owner.get(x+1, y);
+				}
+			
+				if(x>0){
+				diaLeft = owner.get(x-1, y-1);
+				}
+				
+				if(x>0){
+				left = owner.get(x-1, y);
+				}
 				
 				if (falling) {
 					// fall one step if tile below is empty or killable

@@ -79,7 +79,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	public BDBug(BDMap owner, Position initialPos) throws IllegalMoveException {
 		super(owner);
 		this.initialPos = initialPos;
-		initTrajectory();
+//		initTrajectory();
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 		this.initialPos = initialPos;
 		this.radius = radius;
 		this.pause = pause < MIN_PAUSE ? MIN_PAUSE : pause;
-		initTrajectory();
+//		initTrajectory();
 	}
 	
 	public Direction randomDir(){
@@ -135,32 +135,32 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 * 
 	 * @throws IllegalMoveException
 	 */
-	private void initTrajectory() throws IllegalMoveException {
-		
-		
-		path = new ArrayList<>(4 * radius);
-
-		path.add(initialPos);
-
-		Position nextPos = initialPos;
-		for (int i = 0; i < radius; i++) {
-			nextPos = nextPos.moveDirection(randomDir());
-			path.add(nextPos);
-		}
-		
-		for (int i = 0; i < radius; i++) {
-			nextPos = nextPos.moveDirection(randomDir());
-			path.add(nextPos);
-		}
-		for (int i = 0; i < radius; i++) {
-			nextPos = nextPos.moveDirection(randomDir());
-			path.add(nextPos);
-		}
-		for (int i = 0; i < radius; i++) {
-			nextPos = nextPos.moveDirection(randomDir());
-			path.add(nextPos);
-		}
-	}
+//	private void initTrajectory() throws IllegalMoveException {
+//		
+//		
+//		path = new ArrayList<>(4 * radius);
+//
+//		path.add(initialPos);
+//
+//		Position nextPos = initialPos;
+//		for (int i = 0; i < radius; i++) {
+//			nextPos = nextPos.moveDirection(randomDir());
+//			path.add(nextPos);
+//		}
+//		
+//		for (int i = 0; i < radius; i++) {
+//			nextPos = nextPos.moveDirection(randomDir());
+//			path.add(nextPos);
+//		}
+//		for (int i = 0; i < radius; i++) {
+//			nextPos = nextPos.moveDirection(randomDir());
+//			path.add(nextPos);
+//		}
+//		for (int i = 0; i < radius; i++) {
+//			nextPos = nextPos.moveDirection(randomDir());
+//			path.add(nextPos);
+//		}
+//	}
 
 	@Override
 	public void kill() {
@@ -181,7 +181,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 */
 	private void setNextPos() throws IndexOutOfBoundsException{
 		Position cur = owner.getPosition(this);
-		int index = path.indexOf(cur);
+//		int index = path.indexOf(cur);
 		
 		try {
 			
@@ -190,15 +190,10 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 			// cannot move.
 			IBDObject nextObject = owner.get(nextOne);
 			if (nextObject instanceof BDEmpty || nextObject instanceof IBDKillable) {
-				pause=4;
+				pause=2;
 				prepareMove(nextOne.getX(), nextOne.getY());
 			}
-			
-			
-			else {
-			}
-				
-				
+					
 		} catch (IllegalMoveException e) {
 			// If the bug cannot move where it's supposed to, e.g. when a wall
 			// is in its
