@@ -54,7 +54,6 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	public BDPlayer(BDMap owner) {
 		super(owner);
-		setProperties();
 
 	}
 
@@ -87,6 +86,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	 * update sprite image with correct image.
 	 */
 	public void keyPressed(KeyCode key) {
+		setProperties();
 
 		if (key == KeyCode.LEFT) {
 
