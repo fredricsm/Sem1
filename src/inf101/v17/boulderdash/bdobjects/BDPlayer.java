@@ -19,14 +19,14 @@ import inf101.v17.boulderdash.maps.BDMap;
  */
 public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
-	private Image imageR;
-	private Image imageL;
-	private ImagePattern playerColor;
+	private static Image imageR;
+	private static Image imageL;
+	private static ImagePattern playerColor;
 
-	private AudioClip moveSound;
-	private AudioClip diamondSound;
-	private AudioClip stoneSound;
-	private AudioClip splat;
+	private static AudioClip moveSound;
+	private static AudioClip diamondSound;
+	private static AudioClip stoneSound;
+	private static AudioClip splat;
 	
 	 int countL = 1;
 	 int countR = 1;
@@ -70,6 +70,9 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	
 	@Override
 	public Paint getColor() {
+		if(imageR==null){
+		setProperties();
+		}
 		return playerColor;
 
 	}
@@ -86,7 +89,6 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	 * update sprite image with correct image.
 	 */
 	public void keyPressed(KeyCode key) {
-		setProperties();
 
 		if (key == KeyCode.LEFT) {
 
