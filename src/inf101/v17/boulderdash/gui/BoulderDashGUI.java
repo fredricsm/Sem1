@@ -1,8 +1,11 @@
 package inf101.v17.boulderdash.gui;
 
+import inf101.v17.boulderdash.bdobjects.BDDiamond;
+import inf101.v17.boulderdash.bdobjects.BDEmpty;
 import inf101.v17.boulderdash.maps.BDMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -27,9 +30,7 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 	 * Determines how many milliseconds pass between two steps of the program.
 	 */
 	private static final int SPEED = 120;
-
 	private static BDMap theMap;
-
 	public static final double NOMINAL_WIDTH = 1900;
 	public static final double NOMINAL_HEIGHT = 1000;
 	private Stage stage;
@@ -67,8 +68,8 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		mapComponent.widthProperty().bind(scene.widthProperty());
 		mapComponent.heightProperty().bind(scene.heightProperty());
 		mapComponent.heightProperty().bind(Bindings.subtract(Bindings.subtract(scene.heightProperty(), 
-				message.getLayoutBounds().getHeight()), spacing));
-		// mapComponent.setScaleY(-1.0);
+		message.getLayoutBounds().getHeight()), spacing));
+		//mapComponent.setScaleY(-1.0);
 
 
 		timer = new AnimationTimer() {
@@ -107,14 +108,42 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		this.map = theMap;
 	}
 
+	
+	public void endGame() {
+		int nrDia = 0;
+		for (int x = 0; x < map.getWidth(); x++) {
+			for (int y = 0; y < map.getHeight(); y++) {
+				if(map.getGrid().get(x, y) instanceof BDDiamond){
+					nrDia++;
+				}
+			}
+		}
+		
+		if(nrDia==17){
+			map.set(39, 3, new BDEmpty(map));
+//			System.exit(0);
+		}
+		
+		//How to get a new object to be shown here? E.g BDDoor
+		if((map.getPlayer() == map.get(39, 3)  && nrDia==17)){
+			System.exit(0);
+			//google javafx exit
+		}
+	}
+	
+	
+	
 	protected void step() {
 		if (map.getPlayer().isAlive()) {
 			map.step();
 			message.setText("Diamonds: " + map.getPlayer().numberOfDiamonds());
+		
 		} else {
 			message.setText("Player is dead.");
+			System.exit(0);
 		}
 		mapComponent.draw();
+		endGame();
 	}
 
 	@Override
@@ -129,4 +158,8 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 			map.getPlayer().keyPressed(code);
 		}
 	}
+	
+	
+	
+	
 }

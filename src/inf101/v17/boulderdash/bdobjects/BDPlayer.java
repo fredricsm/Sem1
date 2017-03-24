@@ -21,13 +21,17 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	Image imageR = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan.png"));
 	Image imageL = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan2.png"));
-	ImagePattern player = new ImagePattern(imageR, 0, 0, 8, 3, true);
+	ImagePattern playerColor = new ImagePattern(imageR, 0, 0, 8, 3, true);
 
 	AudioClip moveSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/slime4.wav").toString());;
 	AudioClip diamondSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/coin.wav").toString());;
 	AudioClip stoneSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/ConcreteBlockMoving.wav").toString());;
 	AudioClip splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());;
 
+	int countL = 1;
+	int countR = 1;
+	int countU = 1;
+	int countD = 1;
 	// Hvordan returnere et nytt bilde for hvert tastetrykk?
 
 	/**
@@ -51,7 +55,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	@Override
 	public Paint getColor() {
-		return player;
+		return playerColor;
 
 	}
 
@@ -70,20 +74,109 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 		if (key == KeyCode.LEFT) {
 
-			askedToGo = Direction.WEST;
-			player = new ImagePattern(imageL, 4, 3, 8, 3, true);
+			if (countL <= 3) {
+
+				if (countL == 1) {
+					askedToGo = Direction.WEST;
+					playerColor = new ImagePattern(imageL, 4, 3, 8, 3, true);
+					countL++;
+					if (countL > 3) {
+						countL = 1;
+					}
+				} else if (countL == 2) {
+					askedToGo = Direction.WEST;
+					playerColor = new ImagePattern(imageL, 5, 3, 8, 3, true);
+					countL++;
+					if (countL > 3) {
+						countL = 1;
+					}
+
+				} else if (countL == 3) {
+					askedToGo = Direction.WEST;
+					playerColor = new ImagePattern(imageL, 6, 3, 8, 3, true);
+					countL++;
+
+					if (countL > 3) {
+						countL = 1;
+					}
+				}
+			}
 		}
 
 		else if (key == KeyCode.RIGHT) {
-			askedToGo = Direction.EAST;
-			player = new ImagePattern(imageR, 5, 3, 8, 3, true);
-		} else if (key == KeyCode.UP) {
-			askedToGo = Direction.NORTH;
-			player = new ImagePattern(imageL, 1, 4, 8, 3, true);
-		} else if (key == KeyCode.DOWN) {
-			askedToGo = Direction.SOUTH;
-			player = new ImagePattern(imageL, 7, 3, 8, 3, true);
 
+			if (countR <= 3) {
+
+				if (countR == 1) {
+					askedToGo = Direction.EAST;
+					playerColor = new ImagePattern(imageR, 5, 3, 8, 3, true);
+					countR++;
+					if (countR > 3) {
+						countR = 1;
+					}
+				} else if (countR == 2) {
+					askedToGo = Direction.EAST;
+					playerColor = new ImagePattern(imageR, 4, 3, 8, 3, true);
+					countR++;
+					if (countR > 3) {
+						countR = 1;
+					}
+
+				} else if (countR == 3) {
+					askedToGo = Direction.EAST;
+					playerColor = new ImagePattern(imageR, 3, 3, 8, 3, true);
+					countR++;
+
+					if (countR > 3) {
+						countR = 1;
+					}
+				}
+			}
+		}
+
+		else if (key == KeyCode.UP) {
+
+
+			if (countU <= 2) {
+
+				if (countU == 1) {
+					askedToGo = Direction.NORTH;
+					playerColor = new ImagePattern(imageR, 7, 1, 8, 3, true);
+					countU++;
+					if (countU > 2) {
+						countU = 1;
+					}
+				} else if (countU == 2) {
+					askedToGo = Direction.NORTH;
+					playerColor = new ImagePattern(imageR, 8, 1, 8, 3, true);
+					countU++;
+					if (countU > 2) {
+						countU = 1;
+					}
+				}
+			}
+			
+
+		} else if (key == KeyCode.DOWN) {
+
+			if (countD <= 2) {
+
+				if (countD == 1) {
+					askedToGo = Direction.SOUTH;
+					playerColor = new ImagePattern(imageR, 5, 1, 8, 3, true);
+					countD++;
+					if (countD > 2) {
+						countD = 1;
+					}
+				} else if (countD == 2) {
+					askedToGo = Direction.SOUTH;
+					playerColor = new ImagePattern(imageL, 4, 1, 8, 3, true);
+					countD++;
+					if (countD > 2) {
+						countD = 1;
+					}
+				}
+			}
 		}
 	}
 
@@ -104,6 +197,10 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		return diamondCnt;
 	}
 
+	
+	/**
+	 * Method is modified	
+	 */	
 	@Override
 	public void step() {
 
@@ -141,20 +238,15 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 					}
 
 					else if (targetObj instanceof BDDiamond) {
+						
 						prepareMoveTo(askedToGo);
 						diamondSound.play();
+						diamondCnt += 1;
 					}
 
 				} catch (IllegalMoveException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-
-				IBDObject obj = owner.get(getNextPosition());
-				if (obj instanceof BDDiamond) {
-
-					diamondCnt += 1;
-
 				}
 
 			}
@@ -164,6 +256,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		}
 
 		super.step();
+	
 	}
 
 	@Override

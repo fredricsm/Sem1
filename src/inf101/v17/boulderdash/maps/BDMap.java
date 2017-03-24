@@ -32,13 +32,12 @@ import javafx.scene.media.AudioClip;
  */
 public class BDMap {
 	AudioClip ambiance = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Cavern.wav").toString());;
-
 	AudioClip noCanGo = new AudioClip(getClass().getResource("../bdobjects/soundEffects/LowFQThump.wav").toString());;
 
 	/**
 	 * Stores the data of the map
 	 */
-	protected IGrid<IBDObject> grid;
+	private IGrid<IBDObject> grid;
 	/**
 	 * A separate reference to the player, since it is accessed quite
 	 * frequently.
@@ -56,17 +55,17 @@ public class BDMap {
 	 *            {@link #BDDiamond}, 'b' - {@link BDBug}, 'r' -
 	 *            {@link #BDRock}, 'p' - {@link #BDPlayer}
 	 * 
-	 * @param player
+	 * @param playerColor
 	 *            The player object has to be initialized separately.
 	 */
 	public BDMap(IGrid<Character> map) {
-		grid = new MyGrid<IBDObject>(map.getWidth(), map.getHeight(), null);
+		setGrid(new MyGrid<IBDObject>(map.getWidth(), map.getHeight(), null));
 		this.player = new BDPlayer(this);
 		fillGrid(map);
 
 		// Sets the ambiance sound in the mine
 		ambiance.setCycleCount(5);
-		ambiance.setVolume(0.5);
+		ambiance.setVolume(1);
 		ambiance.play();
 	}
 
@@ -95,7 +94,7 @@ public class BDMap {
 			noCanGo.play();
 			return false;
 
-		} else if (grid.get(x, y) instanceof BDWall) {
+		} else if (getGrid().get(x, y) instanceof BDWall) {
 
 			noCanGo.setVolume(0.3);
 			noCanGo.play();
@@ -150,7 +149,7 @@ public class BDMap {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				IBDObject obj = makeObject(inputmap.get(x, y), x, y);
-				grid.set(x, y, obj);
+				getGrid().set(x, y, obj);
 			}
 		}
 	}
@@ -200,7 +199,7 @@ public class BDMap {
 	 * @return
 	 */
 	public IBDObject get(int x, int y) {
-		return grid.get(x, y);
+		return getGrid().get(x, y);
 	}
 
 	/**
@@ -210,7 +209,7 @@ public class BDMap {
 	 * @return
 	 */
 	public IBDObject get(Position pos) {
-		return grid.get(pos.getX(), pos.getY());
+		return getGrid().get(pos.getX(), pos.getY());
 	}
 
 	/**
@@ -219,7 +218,7 @@ public class BDMap {
 	 * @return
 	 */
 	public int getHeight() {
-		return grid.getHeight();
+		return getGrid().getHeight();
 	}
 
 	/**
@@ -274,17 +273,11 @@ public class BDMap {
 	 */
 	public Position getPosition(IBDObject object) {
 
-		for (int x = 0; x < grid.getWidth(); x++) {
-			for (int y = 0; y < grid.getHeight(); y++) {
-				if (grid.get(x, y) == object) {
+		for (int x = 0; x < getGrid().getWidth(); x++) {
+			for (int y = 0; y < getGrid().getHeight(); y++) {
+				if (getGrid().get(x, y) == object) {
 					Position p = new Position(x, y);
 					return p;
-
-					// Vil vel egentlig returnerer koordinatene på gitt grid
-					// posisjon og ikke objektet?
-					// Når en kan returnere koordinatene kan en bruke disse da
-					// som value i hashmap, for så å returnere dette?
-					// Hvor tildeler man verdiene til HashMap? I fillgrid?
 				}
 			}
 
@@ -299,7 +292,7 @@ public class BDMap {
 	 * @return
 	 */
 	public int getWidth() {
-		return grid.getWidth();
+		return getGrid().getWidth();
 	}
 
 	/**
@@ -310,7 +303,7 @@ public class BDMap {
 	 * @return
 	 */
 	private boolean isValidPosition(int x, int y) {
-		return x > -1 && x < grid.getWidth() && y > -1 && y < grid.getHeight();
+		return x > -1 && x < getGrid().getWidth() && y > -1 && y < getGrid().getHeight();
 	}
 
 	/**
@@ -324,7 +317,7 @@ public class BDMap {
 		if (!isValidPosition(x, y)) {
 			throw new IndexOutOfBoundsException();
 		}
-		grid.set(x, y, element);
+		getGrid().set(x, y, element);
 	}
 
 	// setter kun step metoden.
@@ -332,9 +325,19 @@ public class BDMap {
 
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
-				grid.get(x, y).step();
+				getGrid().get(x, y).step();
 			}
 		}
 
 	}
+	
+
+	public IGrid<IBDObject> getGrid() {
+		return grid;
+	}
+
+	public void setGrid(IGrid<IBDObject> grid) {
+		this.grid = grid;
+	}
+	
 }

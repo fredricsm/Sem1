@@ -13,7 +13,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		// This is how you set up the program, change the file path accordingly.
-		MapReader reader = new MapReader("testMap2.txt");
+		
+		MapReader reader = new MapReader("Level1.txt");
 		IGrid<Character> rawGrid = reader.read();
 		BDMap map = new BDMap(rawGrid);
 		BoulderDashGUI.run(map);

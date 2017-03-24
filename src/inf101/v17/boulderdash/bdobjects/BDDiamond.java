@@ -25,5 +25,4 @@ public class BDDiamond extends AbstractBDFallingObject {
 	public Paint getColor() {
 		return img;
 	}
-
 }

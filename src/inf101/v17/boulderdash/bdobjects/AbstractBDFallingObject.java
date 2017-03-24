@@ -1,5 +1,7 @@
 package inf101.v17.boulderdash.bdobjects;
 
+import java.util.Random;
+
 import inf101.v17.boulderdash.Direction;
 import inf101.v17.boulderdash.IllegalMoveException;
 import inf101.v17.boulderdash.Position;
@@ -55,6 +57,7 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 		fallingTimeWaited = 0;
 
 		Position pos = owner.getPosition(this);
+		
 		// The object cannot fall if it is on the lowest row.
 		if (pos.getY() > 0) {
 			try {
@@ -65,12 +68,11 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 				IBDObject under = owner.get(below);
 				IBDObject currentObject = owner.get(getPosition());
 				
+				//Implementation of rock slide functionality. HVORDAN FÅ DETTE I EGEN METODE OG KALLE DET I ARGUMENTENE?
 				int x = currentObject.getX();
 				int y = currentObject.getY();
-				
 				IBDObject diaRight = owner.get(x+1, y-1);
 				IBDObject right = owner.get(x+1, y);
-
 				IBDObject diaLeft = owner.get(x-1, y-1);
 				IBDObject left = owner.get(x-1, y);
 				
@@ -86,6 +88,7 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 						
 						falling = false;
 						//The sounds made by gems and rock falling down
+						
 						if(currentObject instanceof BDRock){
 							rockFalling.setVolume(0.5);
 							rockFalling.play();	
@@ -97,15 +100,25 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 						}
 					}
 				} 
+				
+				//Code excerpt responsible for sliding rocks left or right.
 				else if(under instanceof BDRock || under instanceof BDWall || under instanceof BDDiamond){
-					
-					if((diaRight instanceof BDEmpty && right instanceof BDEmpty) || diaRight instanceof BDPlayer && right instanceof BDEmpty){
-						prepareMoveTo(Direction.EAST);
+						
+					if((diaRight instanceof BDEmpty && right instanceof BDEmpty) || (diaRight instanceof BDPlayer && right instanceof BDEmpty)){
+						if(right instanceof BDEmpty || left instanceof BDEmpty){
+							Random rand = new Random();
+							if(rand.nextInt(100)%2 == 0){
+								prepareMoveTo(Direction.EAST);
+							}
+						}
 					}
 					else if(diaLeft instanceof BDEmpty && left instanceof BDEmpty || diaLeft instanceof BDPlayer && left instanceof BDEmpty){
-					
-						prepareMoveTo(Direction.WEST);
-
+						if(right instanceof BDEmpty || left instanceof BDEmpty){
+							Random rand = new Random();
+							if(rand.nextInt(100)%2 == 0){
+								prepareMoveTo(Direction.WEST);
+							}
+						}
 					}
 				
 				}
@@ -115,7 +128,9 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 					falling = (under instanceof BDEmpty);
 					fallingTimeWaited = 0.5;
 				}
-			} catch (IllegalMoveException e) {
+			} 
+			
+				catch (IllegalMoveException e) {
 				// This should never happen.
 				System.out.println(e);
 				System.exit(1);

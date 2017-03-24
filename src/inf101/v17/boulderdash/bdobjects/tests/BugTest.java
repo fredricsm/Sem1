@@ -47,4 +47,56 @@ public class BugTest {
 		
 		fail("Bug should have moved in 100 steps!");
 	}
+
+	@Test
+	public void bugMovesNot() {
+		IGrid<Character> grid = new MyGrid<>(4, 4, '*');
+		grid.set(2, 2, 'b');
+		map = new BDMap(grid);
+
+		// find the bug
+		Position bugPos = new Position(2,2);
+		IBDObject bug = map.get(bugPos);
+		assertTrue(bug instanceof BDBug);
+		
+		for(int i = 0; i < 100; i++) {
+			map.step();
+			if(map.get(bugPos) == bug) { // get position of bug and bugPos
+				// reported position should not be different
+				assertNotEquals(bugPos, bug);
+				// Bug is kept still
+				return;
+			}
+			
+		}
+		
+		fail("Bug should not have moved");
+	}
+
+	@Test
+	public void bugMovesAsExpected() {
+		IGrid<Character> grid = new MyGrid<>(4, 4, ' ');
+		grid.set(2, 2, 'b');
+		map = new BDMap(grid);
+
+		// find the bug
+		Position bugPos = new Position(2,2);
+		IBDObject bug = map.get(bugPos);
+		assertTrue(bug instanceof BDBug);
+		
+		for(int i = 0; i < 100; i++) {
+			map.step();
+			if(map.get(bugPos) == bug) { // get position of bug and bugPos
+				// reported position should not be different
+				assertNotEquals(bugPos, bug);
+				// Bug is kept still
+				return;
+			}
+			
+		}
+		
+		fail("Bug should not have moved");
+	}
+
+
 }
