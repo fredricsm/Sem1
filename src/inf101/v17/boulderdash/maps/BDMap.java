@@ -198,7 +198,7 @@ public class BDMap {
 	 * @param y
 	 * @return
 	 */
-	public IBDObject get(int x, int y) {
+	public IBDObject get(int x, int y)  {
 		return getGrid().get(x, y);
 	}
 

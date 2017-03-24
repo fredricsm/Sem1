@@ -1,11 +1,11 @@
 package inf101.v17.boulderdash.gui;
 
 import inf101.v17.boulderdash.bdobjects.BDDiamond;
+import inf101.v17.boulderdash.bdobjects.BDDoor;
 import inf101.v17.boulderdash.bdobjects.BDEmpty;
 import inf101.v17.boulderdash.maps.BDMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -122,6 +122,7 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		if(nrDia==17){
 			map.set(39, 3, new BDEmpty(map));
 //			System.exit(0);
+			map.set(39,4, new BDDoor(map));
 		}
 		
 		//How to get a new object to be shown here? E.g BDDoor

@@ -66,7 +66,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 * Determines how far the bug moves when path is set up using the
 	 * initTrajectory()-method.
 	 */
-	protected int radius = 1;
+	protected int radius = 5;
 
 	/**
 	 * The standard constructor, where pause is set to MIN_PAUSE and radius to
@@ -136,6 +136,8 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 * @throws IllegalMoveException
 	 */
 	private void initTrajectory() throws IllegalMoveException {
+		
+		
 		path = new ArrayList<>(4 * radius);
 
 		path.add(initialPos);
@@ -180,9 +182,10 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	private void setNextPos() throws IndexOutOfBoundsException{
 		Position cur = owner.getPosition(this);
 		int index = path.indexOf(cur);
+		
 		try {
 			
-			Position nextOne = path.get((index + 1) % path.size());
+			Position nextOne = cur.moveDirection(randomDir());
 			// If there is a rock or a diamond in the next position, the bug
 			// cannot move.
 			IBDObject nextObject = owner.get(nextOne);
@@ -190,8 +193,9 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 				pause=4;
 				prepareMove(nextOne.getX(), nextOne.getY());
 			}
-			else if(nextObject instanceof BDRock || nextObject instanceof  BDDiamond || nextObject instanceof BDWall){
-				prepareMove(nextOne.moveDirection(randomDir()));
+			
+			
+			else {
 			}
 				
 				
