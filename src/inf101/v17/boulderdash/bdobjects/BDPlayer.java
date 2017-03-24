@@ -19,14 +19,14 @@ import inf101.v17.boulderdash.maps.BDMap;
  */
 public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
-	 Image imageR;
-	 Image imageL;
-	 ImagePattern playerColor;
+	private Image imageR;
+	private Image imageL;
+	private ImagePattern playerColor;
 
-	 AudioClip moveSound;
-	 AudioClip diamondSound;
-	 AudioClip stoneSound;
-	 AudioClip splat;
+	private AudioClip moveSound;
+	private AudioClip diamondSound;
+	private AudioClip stoneSound;
+	private AudioClip splat;
 	
 	 int countL = 1;
 	 int countR = 1;
