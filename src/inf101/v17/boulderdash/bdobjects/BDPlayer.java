@@ -19,19 +19,21 @@ import inf101.v17.boulderdash.maps.BDMap;
  */
 public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
-	Image imageR = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan.png"));
-	Image imageL = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan2.png"));
-	ImagePattern playerColor = new ImagePattern(imageR, 0, 0, 8, 3, true);
+	private Image imageR;
+	private Image imageL;
+	private ImagePattern playerColor;
 
-	AudioClip moveSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/slime4.wav").toString());;
-	AudioClip diamondSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/coin.wav").toString());;
-	AudioClip stoneSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/ConcreteBlockMoving.wav").toString());;
-	AudioClip splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());;
-
-	int countL = 1;
-	int countR = 1;
-	int countU = 1;
-	int countD = 1;
+	private AudioClip moveSound;
+	private AudioClip diamondSound;
+	private AudioClip stoneSound;
+	private AudioClip splat;
+	
+	private int countL = 1;
+	private int countR = 1;
+	private int countU = 1;
+	private int countD = 1;
+	
+	
 	// Hvordan returnere et nytt bilde for hvert tastetrykk?
 
 	/**
@@ -53,8 +55,21 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		super(owner);
 	}
 
+	private void setProperties(){
+		imageR = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan.png"));
+		imageL = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan2.png"));
+		playerColor = new ImagePattern(imageR, 0, 0, 8, 3, true);
+		moveSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/slime4.wav").toString());
+		diamondSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/coin.wav").toString());
+		stoneSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/ConcreteBlockMoving.wav").toString());
+		splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());
+		
+	}
+	
 	@Override
 	public Paint getColor() {
+		
+		setProperties();
 		return playerColor;
 
 	}
