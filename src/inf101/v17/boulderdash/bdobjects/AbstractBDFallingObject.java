@@ -23,7 +23,7 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 	 * make sure that the player doesn't get killed immediately when walking
 	 * under a rock.
 	 */
-	protected static final double WAIT = 0.5;
+	protected static final int WAIT = 4;
 
 	protected boolean falling = false;
 
@@ -77,15 +77,15 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 				IBDObject diaRight = null;
 				
 				
-				if(x<getMap().getWidth()){
+				if(x<getMap().getWidth()-1 && y > 0){
 				diaRight = owner.get(x+1, y-1);
-				
 				}
-				if(x<getMap().getWidth()){
+				
+				if(x<getMap().getWidth()-1){
 				right = owner.get(x+1, y);
 				}
 			
-				if(x>0){
+				if(x>0 && y > 0){
 				diaLeft = owner.get(x-1, y-1);
 				}
 				
@@ -143,7 +143,7 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 					// start falling if tile below is empty
 					
 					falling = (under instanceof BDEmpty);
-					fallingTimeWaited = 0.5;
+					fallingTimeWaited = 4;
 				}
 			} 
 			
