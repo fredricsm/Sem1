@@ -19,20 +19,21 @@ import inf101.v17.boulderdash.maps.BDMap;
  */
 public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
-	private Image imageR;
-	private Image imageL;
-	private ImagePattern playerColor;
+	 Image imageR;
+	 Image imageL;
+	 ImagePattern playerColor;
 
-	private AudioClip moveSound;
-	private AudioClip diamondSound;
-	private AudioClip stoneSound;
-	private AudioClip splat;
+	 AudioClip moveSound;
+	 AudioClip diamondSound;
+	 AudioClip stoneSound;
+	 AudioClip splat;
 	
-	private int countL = 1;
-	private int countR = 1;
-	private int countU = 1;
-	private int countD = 1;
-	
+	 int countL = 1;
+	 int countR = 1;
+	 int countU = 1;
+	 int countD = 1;
+
+
 	
 	// Hvordan returnere et nytt bilde for hvert tastetrykk?
 
@@ -53,6 +54,8 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	public BDPlayer(BDMap owner) {
 		super(owner);
+		setProperties();
+
 	}
 
 	private void setProperties(){
@@ -68,8 +71,6 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	
 	@Override
 	public Paint getColor() {
-		
-		setProperties();
 		return playerColor;
 
 	}
