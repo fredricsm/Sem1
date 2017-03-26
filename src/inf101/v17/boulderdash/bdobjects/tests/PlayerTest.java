@@ -142,7 +142,7 @@ public class PlayerTest {
 				map.step();
 			
 			}
-				assertFalse(map.getPlayer().isAlive()==false);
+				assertTrue(map.getPlayer().isAlive());
 				
 					return;
 				}
