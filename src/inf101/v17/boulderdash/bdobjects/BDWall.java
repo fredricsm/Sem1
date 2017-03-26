@@ -19,7 +19,7 @@ public class BDWall extends AbstractBDObject {
 	// Tiles from
 	// http://www.indiedb.com/games/chesslike-adventures-in-chess/images/tile-themes-sprite-sheet
 	private static final Image image = new Image(BDWall.class.getResourceAsStream("../bdobjects/sprites/SpriteTile.png"));
-	ImagePattern img = new ImagePattern(image, 6, 3.7, 8, 8, true);
+	private ImagePattern img = new ImagePattern(image, 6, 3.7, 8, 8, true);
 
 	public BDWall(BDMap owner) {
 		super(owner);

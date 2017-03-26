@@ -43,6 +43,7 @@ public class BDMap {
 	 * frequently.
 	 */
 	protected BDPlayer player;
+	
 	Map<IBDObject, Position> posOverview = new HashMap<>();
 
 	/**
@@ -65,7 +66,7 @@ public class BDMap {
 
 		// Sets the ambiance sound in the mine
 		ambiance.setCycleCount(5);
-		ambiance.setVolume(1);
+		ambiance.setVolume(0.7);
 		ambiance.play();
 	}
 
@@ -137,7 +138,7 @@ public class BDMap {
 	}
 
 	/**
-	 * This method is used to initialize the map with a given map of charaters,
+	 * This method is used to initialize the map with a given map of characters,
 	 * see also {@link #BDMap(IGrid, BDPlayer)}.
 	 * 
 	 * @param inputmap
@@ -150,6 +151,7 @@ public class BDMap {
 			for (int y = 0; y < height; y++) {
 				IBDObject obj = makeObject(inputmap.get(x, y), x, y);
 				getGrid().set(x, y, obj);
+
 			}
 		}
 	}
@@ -271,18 +273,22 @@ public class BDMap {
 	 * @param object
 	 * @return
 	 */
+	
+	
 	public Position getPosition(IBDObject object) {
 
+		
 		for (int x = 0; x < getGrid().getWidth(); x++) {
 			for (int y = 0; y < getGrid().getHeight(); y++) {
 				if (getGrid().get(x, y) == object) {
 					Position p = new Position(x, y);
-					return p;
+					return p;					
 				}
+			
 			}
 
 		}
-
+//
 		return null;
 	}
 
@@ -325,9 +331,13 @@ public class BDMap {
 
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
+				if(x<getWidth()-1 && y<getHeight()-1){
 				getGrid().get(x, y).step();
+			
+				}
 			}
 		}
+		
 
 	}
 	

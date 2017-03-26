@@ -16,8 +16,6 @@ public class BDEmpty extends AbstractBDObject {
 		super(owner);
 	}
 
-	
-	
 	@Override
 	public Paint getColor() {
 		return Color.BLACK;

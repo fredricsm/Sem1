@@ -32,7 +32,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	/**
 	 * The minimum amount of steps any bug has to pause between two moves.
 	 */
-	protected static final int MIN_PAUSE = 4;
+	protected static final int MIN_PAUSE = 2;
 
 	/**
 	 * The position where the bug spawns when the program is loaded.
@@ -45,8 +45,8 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	// https://www.google.no/search?q=monster+sprite&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiQpY-EyOnSAhUmQZoKHQf4AcoQ_AUICCgB&biw=1517&bih=654#tbm=isch&q=slug+monster+pixel&*&imgrc=QbZ3-emFCjfU_M:
 
 	private static final Image image = new Image(BDWall.class.getResourceAsStream("../bdobjects/sprites/SlimeGif.gif"));
-	ImagePattern img = new ImagePattern(image);
-	AudioClip splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());;
+	private ImagePattern img = new ImagePattern(image);
+	private AudioClip splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());;
 
 	/**
 	 * This field contains the sequence of moves the bug performs repeatedly.
@@ -66,7 +66,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 * Determines how far the bug moves when path is set up using the
 	 * initTrajectory()-method.
 	 */
-	protected int radius = 5;
+//	protected int radius = 1;
 
 	/**
 	 * The standard constructor, where pause is set to MIN_PAUSE and radius to
@@ -79,7 +79,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	public BDBug(BDMap owner, Position initialPos) throws IllegalMoveException {
 		super(owner);
 		this.initialPos = initialPos;
-//		initTrajectory();
+		// initTrajectory();
 	}
 
 	/**
@@ -96,71 +96,37 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	public BDBug(BDMap owner, Position initialPos, int radius, int pause) throws IllegalMoveException {
 		super(owner);
 		this.initialPos = initialPos;
-		this.radius = radius;
+//		this.radius = radius;
 		this.pause = pause < MIN_PAUSE ? MIN_PAUSE : pause;
-//		initTrajectory();
+		// initTrajectory();
 	}
-	
-	public Direction randomDir(){
+
+	public Direction randomDir() {
 		Random rand = new Random();
 		Direction dir = null;
-		int x=rand.nextInt(3);
-		
-		switch(x){
-			
+		int x = rand.nextInt(4);
+
+		switch (x) {
+
 		case 0:
 			return dir = Direction.EAST;
-			
+
 		case 1:
 			return dir = Direction.WEST;
-			
+
 		case 2:
 			return dir = Direction.SOUTH;
-		
-		case 3: 
+
+		case 3:
 			return dir = Direction.NORTH;
 		}
 		return dir;
 	}
 
-	
 	@Override
 	public Paint getColor() {
 		return img;
 	}
-
-	/**
-	 * Initialize the path of this bug, which is its initial position and then
-	 * radius times to the left, then up, then right, then down.
-	 * 
-	 * @throws IllegalMoveException
-	 */
-//	private void initTrajectory() throws IllegalMoveException {
-//		
-//		
-//		path = new ArrayList<>(4 * radius);
-//
-//		path.add(initialPos);
-//
-//		Position nextPos = initialPos;
-//		for (int i = 0; i < radius; i++) {
-//			nextPos = nextPos.moveDirection(randomDir());
-//			path.add(nextPos);
-//		}
-//		
-//		for (int i = 0; i < radius; i++) {
-//			nextPos = nextPos.moveDirection(randomDir());
-//			path.add(nextPos);
-//		}
-//		for (int i = 0; i < radius; i++) {
-//			nextPos = nextPos.moveDirection(randomDir());
-//			path.add(nextPos);
-//		}
-//		for (int i = 0; i < radius; i++) {
-//			nextPos = nextPos.moveDirection(randomDir());
-//			path.add(nextPos);
-//		}
-//	}
 
 	@Override
 	public void kill() {
@@ -179,21 +145,23 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 * 
 	 * @return
 	 */
-	private void setNextPos() throws IndexOutOfBoundsException{
+	private void setNextPos() {
 		Position cur = owner.getPosition(this);
-//		int index = path.indexOf(cur);
-		
 		try {
-			
 			Position nextOne = cur.moveDirection(randomDir());
+			IBDObject nextObject = owner.get(nextOne);
+
 			// If there is a rock or a diamond in the next position, the bug
 			// cannot move.
-			IBDObject nextObject = owner.get(nextOne);
-			if (nextObject instanceof BDEmpty || nextObject instanceof IBDKillable) {
-				pause=2;
+			if (nextObject instanceof BDRock || nextObject instanceof BDWall || nextObject instanceof BDSand) {
+				nextOne = cur.moveDirection(randomDir());
+			}
+			else{
+				pause = 4;
 				prepareMove(nextOne.getX(), nextOne.getY());
 			}
-					
+			
+
 		} catch (IllegalMoveException e) {
 			// If the bug cannot move where it's supposed to, e.g. when a wall
 			// is in its
@@ -209,7 +177,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 		// Only execute the bug's movement after it had its' pause.
 		// Sets pause so that it will not kill player immediately after its been
 		// freed.
-		
+
 		if (movedSince == pause) {
 			// Set the next position according to the path
 			setNextPos();

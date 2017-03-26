@@ -11,7 +11,4 @@ public class AIBDBug extends BDBug {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
-	
 }

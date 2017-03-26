@@ -15,7 +15,7 @@ import inf101.v17.boulderdash.maps.BDMap;
 public class BDDiamond extends AbstractBDFallingObject {
 
 	private static final Image image = new Image(BDDiamond.class.getResourceAsStream("../bdobjects/sprites/Diamond1.gif"));
-	ImagePattern img = new ImagePattern(image);
+	private static final ImagePattern img = new ImagePattern(image);
 
 	public BDDiamond(BDMap owner) {
 		super(owner);

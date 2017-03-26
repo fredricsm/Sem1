@@ -5,7 +5,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
-import javafx.scene.transform.Scale;
 import inf101.v17.boulderdash.Direction;
 import inf101.v17.boulderdash.IllegalMoveException;
 import inf101.v17.boulderdash.Position;
@@ -27,14 +26,12 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	private static AudioClip diamondSound;
 	private static AudioClip stoneSound;
 	private static AudioClip splat;
-	
+
 	private int countL = 1;
 	private int countR = 1;
 	private int countU = 1;
 	private int countD = 1;
 
-
-	
 	// Hvordan returnere et nytt bilde for hvert tastetrykk?
 
 	/**
@@ -57,7 +54,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	}
 
-	private void setProperties(){
+	private void setProperties() {
 		imageR = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan.png"));
 		imageL = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan2.png"));
 		playerColor = new ImagePattern(imageR, 0, 0, 8, 3, true);
@@ -65,13 +62,13 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		diamondSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/coin.wav").toString());
 		stoneSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/ConcreteBlockMoving.wav").toString());
 		splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());
-		
+
 	}
-	
+
 	@Override
 	public Paint getColor() {
-		if(imageR==null){
-		setProperties();
+		if (imageR == null) {
+			setProperties();
 		}
 		return playerColor;
 
@@ -154,7 +151,6 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 		else if (key == KeyCode.UP) {
 
-
 			if (countU <= 2) {
 
 				if (countU == 1) {
@@ -173,7 +169,6 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 					}
 				}
 			}
-			
 
 		} else if (key == KeyCode.DOWN) {
 
@@ -200,9 +195,9 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 
 	@Override
 	public void kill() {
-		if(splat==null){
+		if (splat == null) {
 			setProperties();
-			}
+		}
 		splat.play();
 
 		this.alive = false;
@@ -218,10 +213,9 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		return diamondCnt;
 	}
 
-	
 	/**
-	 * Method is modified	
-	 */	
+	 * Method is modified
+	 */
 	@Override
 	public void step() {
 
@@ -259,7 +253,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 					}
 
 					else if (targetObj instanceof BDDiamond) {
-						
+
 						prepareMoveTo(askedToGo);
 						diamondSound.play();
 						diamondCnt += 1;
@@ -277,7 +271,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		}
 
 		super.step();
-	
+
 	}
 
 	@Override

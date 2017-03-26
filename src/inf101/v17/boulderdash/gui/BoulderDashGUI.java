@@ -4,6 +4,8 @@ import inf101.v17.boulderdash.bdobjects.BDDiamond;
 import inf101.v17.boulderdash.bdobjects.BDDoor;
 import inf101.v17.boulderdash.bdobjects.BDEmpty;
 import inf101.v17.boulderdash.maps.BDMap;
+import inf101.v17.boulderdash.maps.MapReader;
+import inf101.v17.datastructures.IGrid;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -14,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -34,7 +37,6 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 	public static final double NOMINAL_WIDTH = 1900;
 	public static final double NOMINAL_HEIGHT = 1000;
 	private Stage stage;
-
 	/**
 	 * Runs the program on a given map.
 	 *
@@ -49,14 +51,13 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
 		double spacing = 10;
-		
+
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
 		Group root = new Group();
-		double width = Math.min(primaryScreenBounds.getWidth() - 40, map.getWidth()*200);
-		double height = Math.min(primaryScreenBounds.getHeight() - 100, map.getWidth()*200);
-		Scene scene = new Scene(root, width, height,
-				Color.BLACK);
+		double width = Math.min(primaryScreenBounds.getWidth() - 40, map.getWidth() * 200);
+		double height = Math.min(primaryScreenBounds.getHeight() - 100, map.getWidth() * 200);
+		Scene scene = new Scene(root, width, height, Color.BLACK);
 		stage.setScene(scene);
 
 		message = new Text(10, 0, "");
@@ -67,10 +68,8 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		mapComponent = new BDMapComponent(map);
 		mapComponent.widthProperty().bind(scene.widthProperty());
 		mapComponent.heightProperty().bind(scene.heightProperty());
-		mapComponent.heightProperty().bind(Bindings.subtract(Bindings.subtract(scene.heightProperty(), 
-		message.getLayoutBounds().getHeight()), spacing));
-		//mapComponent.setScaleY(-1.0);
-
+		mapComponent.heightProperty().bind(Bindings.subtract(Bindings.subtract(scene.heightProperty(), message.getLayoutBounds().getHeight()), spacing));
+		// mapComponent.setScaleY(-1.0);
 
 		timer = new AnimationTimer() {
 
@@ -108,43 +107,40 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		this.map = theMap;
 	}
 
-	
 	public void endGame() {
 		int nrDia = 0;
 		for (int x = 0; x < map.getWidth(); x++) {
 			for (int y = 0; y < map.getHeight(); y++) {
-				if(map.getGrid().get(x, y) instanceof BDDiamond){
+				if (map.getGrid().get(x, y) instanceof BDDiamond) {
 					nrDia++;
 				}
 			}
 		}
-		
-		if(nrDia==17){
-			map.set(39, 3, new BDEmpty(map));
-//			System.exit(0);
-			map.set(39,4, new BDDoor(map));
+
+		if (nrDia == 17) {
+			// System.exit(0);
+			map.set(39, 3, new BDDoor(map));
+			
 		}
-		
-		//How to get a new object to be shown here? E.g BDDoor
-		if((map.getPlayer() == map.get(39, 3)  && nrDia==17)){
+
+		if ((map.getPlayer() == map.get(39, 3) && nrDia == 17)) {
 			System.exit(0);
-			//google javafx exit
+			// google javafx exit
 		}
 	}
-	
-	
-	
+
 	protected void step() {
 		if (map.getPlayer().isAlive()) {
 			map.step();
 			message.setText("Diamonds: " + map.getPlayer().numberOfDiamonds());
-		
+
 		} else {
 			message.setText("Player is dead.");
 			System.exit(0);
 		}
 		mapComponent.draw();
 		endGame();
+		
 	}
 
 	@Override
@@ -159,8 +155,5 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 			map.getPlayer().keyPressed(code);
 		}
 	}
-	
-	
-	
-	
+
 }

@@ -11,22 +11,19 @@ import javafx.scene.paint.Paint;
 
 public class BDRock extends AbstractBDFallingObject {
 
-	//https://www.google.no/search?q=stone+pixel+art&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjrhcaN0OfSAhUxSJoKHdZYCPAQ_AUICCgB&biw=1517&bih=654#tbm=isch&q=boulder+vector&*&imgrc=pN206JuPNSS_nM:
-	//Setter til private static final. Hvis ikke vil nytt bilde måtte hentes inn for hver eneste refresh for hvert object.
-	private static final Image image  = new Image(BDRock.class.getResourceAsStream("../bdobjects/sprites/boulder.png"));
-	ImagePattern img = new ImagePattern(image);
-	
-	AudioClip noCanGo = new AudioClip(getClass().getResource("../bdobjects/soundEffects/LowFQThump.wav").toString());;
+	// https://www.google.no/search?q=stone+pixel+art&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjrhcaN0OfSAhUxSJoKHdZYCPAQ_AUICCgB&biw=1517&bih=654#tbm=isch&q=boulder+vector&*&imgrc=pN206JuPNSS_nM:
+	// Setter til private static final. Hvis ikke vil nytt bilde måtte hentes
+	// inn for hver eneste refresh for hvert object.
+	private static final Image image = new Image(BDRock.class.getResourceAsStream("../bdobjects/sprites/boulder.png"));
+	private ImagePattern img = new ImagePattern(image);
 
-	
-	
-	
+	private AudioClip noCanGo = new AudioClip(getClass().getResource("../bdobjects/soundEffects/LowFQThump.wav").toString());;
+
 	public BDRock(BDMap owner) {
 		super(owner);
 		// TODO Auto-generated constructor stub
 	}
 
-	
 	@Override
 	public Paint getColor() {
 		return img;
@@ -44,7 +41,7 @@ public class BDRock extends AbstractBDFallingObject {
 
 		if (dir == Direction.EAST || dir == Direction.WEST) {
 			Position nextpos = pos.moveDirection(dir);
-			if (owner.canGo(nextpos) && owner.get(nextpos) instanceof BDEmpty ) {
+			if (owner.canGo(nextpos) && owner.get(nextpos) instanceof BDEmpty) {
 				try {
 					prepareMove(nextpos);
 					step();
@@ -53,10 +50,9 @@ public class BDRock extends AbstractBDFallingObject {
 					e.printStackTrace();
 				}
 			}
-		
-			
+
 		}
-		noCanGo.setVolume(0.3);
+		noCanGo.setVolume(0.7);
 		noCanGo.play();
 		return false;
 
