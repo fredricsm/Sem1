@@ -152,7 +152,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 			// If there is a rock or a diamond in the next position, the bug
 			// cannot move.
 			
-			if(nextObject instanceof BDEmpty && nextOne != lastOne){		
+			if((nextObject instanceof BDEmpty || nextObject instanceof BDPlayer) && nextOne != lastOne){		
 				lastOne = cur;
 				prepareMove(nextOne.getX(), nextOne.getY());
 			}

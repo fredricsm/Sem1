@@ -137,11 +137,12 @@ public class PlayerTest {
 			
 			for(int i = 0; i < 100000; i++) {
 				map.step();
-				map.step();	
-				map.step();	
-				map.step();	
+				map.step();
+				map.step();
+				map.step();
+			
 			}
-				assertTrue(map.getPlayer().isAlive());
+				assertFalse(map.getPlayer().isAlive()==false);
 				
 					return;
 				}
