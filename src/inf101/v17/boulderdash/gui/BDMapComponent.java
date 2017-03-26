@@ -26,17 +26,16 @@ public class BDMapComponent extends Canvas {
 	}
 
 	public void draw() {
-//		Image image  = new Image(getClass().getResourceAsStream("../bdobjects/sprites/Miner1.png"));
-//		ImagePattern img = new ImagePattern(image ,0,0, 1,1,true);
+
 
 		
 		GraphicsContext g = getGraphicsContext2D();
-		//fjerner gammelt bilde slik at en ikke tegner på hverandre.
+		//Removes old picture 
 		//g.clearRect(0, 0, getWidth(), getHeight());
 		
 		g.setFill(Color.BLACK);
 		
-		//brukes for å fylle rektangle med nytt img.
+		//New image fill
 		g.fillRect(0, 0, getWidth(), getHeight());
 			
 		double cellDim = Math.min(getWidth() / map.getWidth() - padding,

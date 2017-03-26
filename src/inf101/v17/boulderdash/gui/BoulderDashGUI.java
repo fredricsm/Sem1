@@ -1,13 +1,14 @@
 package inf101.v17.boulderdash.gui;
 
+
+import inf101.v17.boulderdash.Main;
 import inf101.v17.boulderdash.bdobjects.BDDiamond;
 import inf101.v17.boulderdash.bdobjects.BDDoor;
-import inf101.v17.boulderdash.bdobjects.BDEmpty;
+import inf101.v17.boulderdash.bdobjects.BDWall;
 import inf101.v17.boulderdash.maps.BDMap;
-import inf101.v17.boulderdash.maps.MapReader;
-import inf101.v17.datastructures.IGrid;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -16,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -37,6 +37,7 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 	public static final double NOMINAL_WIDTH = 1900;
 	public static final double NOMINAL_HEIGHT = 1000;
 	private Stage stage;
+
 	/**
 	 * Runs the program on a given map.
 	 *
@@ -45,12 +46,14 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 	public static void run(BDMap map) {
 		theMap = map;
 		launch();
+
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
 		double spacing = 10;
+		newGame();
 
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -68,7 +71,8 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		mapComponent = new BDMapComponent(map);
 		mapComponent.widthProperty().bind(scene.widthProperty());
 		mapComponent.heightProperty().bind(scene.heightProperty());
-		mapComponent.heightProperty().bind(Bindings.subtract(Bindings.subtract(scene.heightProperty(), message.getLayoutBounds().getHeight()), spacing));
+		mapComponent.heightProperty().bind(Bindings
+				.subtract(Bindings.subtract(scene.heightProperty(), message.getLayoutBounds().getHeight()), spacing));
 		// mapComponent.setScaleY(-1.0);
 
 		timer = new AnimationTimer() {
@@ -107,7 +111,13 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		this.map = theMap;
 	}
 
-	public void endGame() {
+	/**
+	 * A method that will count the number of diamonds available on the map.
+	 * When the number == 0, a door will open. Extra functionality will be to
+	 * implement loading of a new level when the player enters through the door.
+	 * 
+	 */
+	public void newGame() {
 		int nrDia = 0;
 		for (int x = 0; x < map.getWidth(); x++) {
 			for (int y = 0; y < map.getHeight(); y++) {
@@ -116,16 +126,13 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 				}
 			}
 		}
-
-		if (nrDia == 17) {
+		if (nrDia == 0) {
 			// System.exit(0);
 			map.set(39, 3, new BDDoor(map));
-			
 		}
 
-		if ((map.getPlayer() == map.get(39, 3) && nrDia == 17)) {
-			System.exit(0);
-			// google javafx exit
+		else if (nrDia != 0) {
+			map.set(39, 3, new BDWall(map));
 		}
 	}
 
@@ -134,13 +141,19 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 			map.step();
 			message.setText("Diamonds: " + map.getPlayer().numberOfDiamonds());
 
-		} else {
-			message.setText("Player is dead.");
-			System.exit(0);
+			if (map.getPlayer().getPosition() == null) {
+			 message.setText("Congratulations");
+				
+			}
 		}
+
+		else {
+			message.setText("Player is dead.");
+			//System.exit(0);
+
+		}
+		newGame();
 		mapComponent.draw();
-		endGame();
-		
 	}
 
 	@Override
@@ -150,7 +163,16 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 			System.exit(0);
 		} else if (code == KeyCode.F) {
 			stage.setFullScreen(!stage.isFullScreen());
-		} else {
+		} 
+//Update late with functionality for relaunching map.
+//		else if (code == KeyCode.L) {
+//			Platform.exit();
+//			String[] args = {};
+//			Main.main(args);
+//		}
+//		
+		
+		else {
 
 			map.getPlayer().keyPressed(code);
 		}

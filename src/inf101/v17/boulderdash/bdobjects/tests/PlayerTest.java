@@ -19,9 +19,6 @@ import inf101.v17.datastructures.MyGrid;
 import javafx.scene.input.KeyCode;
 public class PlayerTest {
 
-	
-	
-
 
 
 		private BDMap map;

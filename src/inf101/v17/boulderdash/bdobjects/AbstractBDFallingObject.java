@@ -21,12 +21,11 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 	 * A timeout between the moment when an object can fall (e.g. the tile
 	 * underneath it becomes empty) and the moment it does. This is necessary to
 	 * make sure that the player doesn't get killed immediately when walking
-	 * under a rock.
+	 * under a rock. The stone will not kill the person underneath right after an obstructing tile has been removed.
 	 */
 	protected static final int WAIT = 1;
-
 	protected boolean falling = false;
-
+	
 	protected AudioClip rockFalling = new AudioClip(getClass().getResource("../bdobjects/soundEffects/BoulderImpact.wav").toString());
 	protected AudioClip gemFalling = new AudioClip(getClass().getResource("../bdobjects/soundEffects/GemPling.wav").toString());
 
@@ -34,7 +33,7 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 	 * A counter to keep track when the falling should be executed next, see the
 	 * WAIT constant.
 	 */
-	protected double fallingTimeWaited = 0;
+	protected int fallingTimeWaited;
 
 	public AbstractBDFallingObject(BDMap owner) {
 		super(owner);
@@ -43,7 +42,9 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 	/**
 	 * This method implements the logic of the object falling. It checks whether
 	 * it can fall, depending on the object in the tile underneath it and if so,
-	 * tries to prepare the move.
+	 * tries to prepare the move. Empty space to the right or left of a rock or a diamond
+	 * will cause the current object to slide either left or right, depending on
+	 * which cells are empty.
 	 */
 
 	public void fall() {

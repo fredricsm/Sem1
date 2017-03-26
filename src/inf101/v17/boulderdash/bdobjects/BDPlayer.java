@@ -53,7 +53,9 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		super(owner);
 
 	}
-
+	/**
+	 * A method containing all sound and images used for the player.
+	 */
 	private void setProperties() {
 		imageR = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan.png"));
 		imageL = new Image(BDPlayer.class.getResourceAsStream("../bdobjects/sprites/MegaMan2.png"));
@@ -246,6 +248,12 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 						moveSound.play();
 					}
 
+
+					else if (targetObj instanceof BDDoor) {
+						prepareMoveTo(askedToGo);
+						moveSound.setVolume(0.1);
+						moveSound.play();
+					}
 					else if (targetObj instanceof BDEmpty) {
 						prepareMoveTo(askedToGo);
 						moveSound.setVolume(0.1);

@@ -131,9 +131,7 @@ public class BugTest {
 		
 		for(int i = 0; i < 10000; i++) {
 			map.step();
-			map.step();	
-			map.step();	
-			map.step();	
+
 		}
 			assertTrue(map.getPlayer().isAlive());
 			

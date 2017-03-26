@@ -44,7 +44,8 @@ public class BDMap {
 	 */
 	protected BDPlayer player;
 	
-	Map<IBDObject, Position> posOverview = new HashMap<>();
+//	Not implemented
+//	Map<IBDObject, Position> posOverview = new HashMap<>();
 
 	/**
 	 * Main constructor of this class.
@@ -284,11 +285,8 @@ public class BDMap {
 					Position p = new Position(x, y);
 					return p;					
 				}
-			
 			}
-
 		}
-//
 		return null;
 	}
 

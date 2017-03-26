@@ -42,8 +42,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	// Counts the number of skipped steps.
 	protected int movedSince = 0;
 
-	// https://www.google.no/search?q=monster+sprite&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiQpY-EyOnSAhUmQZoKHQf4AcoQ_AUICCgB&biw=1517&bih=654#tbm=isch&q=slug+monster+pixel&*&imgrc=QbZ3-emFCjfU_M:
-
+	// images and sound for bug.
 	private static final Image image = new Image(BDWall.class.getResourceAsStream("../bdobjects/sprites/SlimeGif.gif"));
 	private ImagePattern img = new ImagePattern(image);
 	private AudioClip splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());;
@@ -61,12 +60,6 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	 * value is set to the constant MIN_PAUSE.
 	 */
 	protected int pause = MIN_PAUSE;
-
-	/**
-	 * Determines how far the bug moves when path is set up using the
-	 * initTrajectory()-method.
-	 */
-//	protected int radius = 1;
 
 	/**
 	 * The standard constructor, where pause is set to MIN_PAUSE and radius to
@@ -100,12 +93,15 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 		this.pause = pause < MIN_PAUSE ? MIN_PAUSE : pause;
 		// initTrajectory();
 	}
-
+	/**
+	 * 
+	 * Method for generating a random direction that the bug can follow.
+	 *  
+	 */
 	public Direction randomDir() {
 		Random rand = new Random();
 		Direction dir = null;
 		int x = rand.nextInt(4);
-
 		switch (x) {
 
 		case 0:
@@ -121,8 +117,8 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 			return dir = Direction.NORTH;
 		}
 		return dir;
+	
 	}
-
 	@Override
 	public Paint getColor() {
 		return img;
@@ -141,28 +137,32 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	}
 
 	/**
-	 * Sets the next position and returns the current one.
-	 * 
-	 * @return
+	 * Sets the next position and returns the current one. If lastDirection is equal to the 
+	 * next direction, a new direction is set.
+	 *  
 	 */
 	private void setNextPos() {
 		Position cur = owner.getPosition(this);
-		try {
-			Position nextOne = cur.moveDirection(randomDir());
-			IBDObject nextObject = owner.get(nextOne);
+		Position nextOne = cur.moveDirection(randomDir());
 
+		IBDObject nextObject = owner.get(nextOne);
+		Position lastOne = null;
+
+		try {
 			// If there is a rock or a diamond in the next position, the bug
 			// cannot move.
-			if (nextObject instanceof BDRock || nextObject instanceof BDWall || nextObject instanceof BDSand) {
-				nextOne = cur.moveDirection(randomDir());
+			
+			if(nextObject instanceof BDEmpty && nextOne != lastOne){		
+				lastOne = cur;
+				prepareMove(nextOne.getX(), nextOne.getY());
 			}
 			else{
-				pause = 4;
-				prepareMove(nextOne.getX(), nextOne.getY());
+				return;
 			}
 			
 
-		} catch (IllegalMoveException e) {
+		} 
+		catch (IllegalMoveException e) {
 			// If the bug cannot move where it's supposed to, e.g. when a wall
 			// is in its
 			// path, there is something wrong with the map -> kill the program.
