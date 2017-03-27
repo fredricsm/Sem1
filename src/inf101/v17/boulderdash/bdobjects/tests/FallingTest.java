@@ -20,19 +20,19 @@ import inf101.v17.datastructures.MyGrid;
 
 public class FallingTest {
 	private BDMap map;
-	@Before
-	public void setup() {
-		IGrid<Character> grid = new MyGrid<>(2, 5, ' ');
-		grid.set(0, 4, 'd');
-		grid.set(0, 0, '*');
-		map = new BDMap(grid);
-	}
+//	@Before
+//	public void setup() {
+//		IGrid<Character> grid = new MyGrid<>(2, 5, ' ');
+//		grid.set(0, 4, 'd');
+//		grid.set(0, 0, '*');
+//		map = new BDMap(grid);
+//	}
 
 	
-	@Test
-	public void fallingTest2() {
-		checkFall(new Position(0, 4));
-	}
+//	@Test
+//	public void fallingTest2() {
+//		checkFall(new Position(0, 4));
+//	}
 	
 	
 	@Test
@@ -77,7 +77,7 @@ public class FallingTest {
 		IGrid<Character> grid = new MyGrid<>(2, 5, ' ');
 		grid.set(0, 3, 'd');
 		grid.set(0, 2, 'p');
-		grid.set(0, 0, '#');
+		grid.set(0, 1, '#');
 		map = new BDMap(grid);
 		
 		IBDObject obj = map.get(0, 2);
@@ -110,29 +110,29 @@ public class FallingTest {
 
 		}
 	
-	protected Position checkFall(Position pos) {
-		IBDObject obj = map.get(pos);
-		if (obj instanceof AbstractBDFallingObject) {
-			Position next = pos.moveDirection(Direction.SOUTH);
-			if (map.canGo(next)) {
-				IBDObject target = map.get(next);
-				if (target.isEmpty() || target.isKillable()) {
-				} else {
-					next = pos;
-				}
-			} else {
-				next = pos;
-			}
-			//map.step(); System.out.println(map.getPosition(object));
-			map.step();
-			map.step();
-			map.step();
-			map.step();
-			assertEquals(obj, map.get(next));
-			return next;
-		} else
-			return pos;
-	}
+//	protected Position checkFall(Position pos) {
+//		IBDObject obj = map.get(pos);
+//		if (obj instanceof AbstractBDFallingObject) {
+//			Position next = pos.moveDirection(Direction.SOUTH);
+//			if (map.canGo(next)) {
+//				IBDObject target = map.get(next);
+//				if (target.isEmpty() || target.isKillable()) {
+//				} else {
+//					next = pos;
+//				}
+//			} else {
+//				next = pos;
+//			}
+//			//map.step(); System.out.println(map.getPosition(object));
+//			map.step();
+//			map.step();
+//			map.step();
+//			map.step();
+//			assertEquals(obj, map.get(next));
+//			return next;
+//		} else
+//			return pos;
+//	}
 
 }
 //	@Before

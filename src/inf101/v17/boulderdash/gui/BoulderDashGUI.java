@@ -136,6 +136,7 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		}
 	}
 
+	
 	protected void step() {
 		if (map.getPlayer().isAlive()) {
 			map.step();

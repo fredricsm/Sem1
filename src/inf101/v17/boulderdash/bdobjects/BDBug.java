@@ -32,7 +32,7 @@ public class BDBug extends AbstractBDKillingObject implements IBDKillable {
 	/**
 	 * The minimum amount of steps any bug has to pause between two moves.
 	 */
-	protected static final int MIN_PAUSE = 2;
+	protected static final int MIN_PAUSE = 4;
 
 	/**
 	 * The position where the bug spawns when the program is loaded.
