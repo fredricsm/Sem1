@@ -3,6 +3,8 @@ package inf101.v17.datastructures;
 import java.util.ArrayList;
 import java.util.List;
 
+import inf101.v17.boulderdash.Position;
+
 /**
  *
  * A Grid contains a set of cells in a square 2D matrix.
@@ -117,6 +119,12 @@ public class MyGrid<T> implements IGrid<T> {
 		}
 
 		cells.set(x + y * width, elem);
+	}
+
+	@Override
+	public T get(Position pos) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

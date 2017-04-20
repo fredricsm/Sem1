@@ -23,7 +23,7 @@ public abstract class AbstractBDFallingObject extends AbstractBDKillingObject {
 	 * make sure that the player doesn't get killed immediately when walking
 	 * under a rock. The stone will not kill the person underneath right after an obstructing tile has been removed.
 	 */
-	protected static final int WAIT = 1;
+	protected static final int WAIT =2;
 	protected boolean falling = false;
 	
 	protected AudioClip rockFalling = new AudioClip(getClass().getResource("../bdobjects/soundEffects/BoulderImpact.wav").toString());

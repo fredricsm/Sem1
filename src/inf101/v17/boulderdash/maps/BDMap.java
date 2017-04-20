@@ -3,25 +3,23 @@ package inf101.v17.boulderdash.maps;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import inf101.v17.boulderdash.Direction;
 import inf101.v17.boulderdash.IllegalMoveException;
 import inf101.v17.boulderdash.Position;
-import inf101.v17.boulderdash.bdobjects.AbstractBDMovingObject;
 import inf101.v17.boulderdash.bdobjects.BDBug;
 import inf101.v17.boulderdash.bdobjects.BDDiamond;
+import inf101.v17.boulderdash.bdobjects.BDDoor;
 import inf101.v17.boulderdash.bdobjects.BDEmpty;
 import inf101.v17.boulderdash.bdobjects.BDPlayer;
+import inf101.v17.boulderdash.bdobjects.BDProjectile;
 import inf101.v17.boulderdash.bdobjects.BDRock;
 import inf101.v17.boulderdash.bdobjects.BDSand;
 import inf101.v17.boulderdash.bdobjects.BDWall;
 import inf101.v17.boulderdash.bdobjects.IBDObject;
 import inf101.v17.datastructures.IGrid;
 import inf101.v17.datastructures.MyGrid;
-import javafx.geometry.Pos;
 import javafx.scene.media.AudioClip;
 
 /**
@@ -44,6 +42,7 @@ public class BDMap {
 	 */
 	protected BDPlayer player;
 	
+	protected BDProjectile bullet;
 //	Not implemented
 //	Map<IBDObject, Position> posOverview = new HashMap<>();
 
@@ -134,6 +133,8 @@ public class BDMap {
 			return canGo(pos.getX() + 1, pos.getY());
 		case WEST:
 			return canGo(pos.getX() - 1, pos.getY());
+		default:
+			break;
 		}
 		throw new IllegalArgumentException();
 	}
@@ -184,10 +185,14 @@ public class BDMap {
 		} else if (c == 'd') {
 			return new BDDiamond(this);
 		}
-
 		else if (c == 'r') {
 			return new BDRock(this);
 		}
+	
+		else if (c == 'e'){
+			return new BDDoor(this);
+		}
+		
 		System.err.println("Illegal character in map definition at (" + x + ", " + y + "): '" + c + "'");
 		return new BDEmpty(this);
 		// alternatively, throw an exception
@@ -262,10 +267,20 @@ public class BDMap {
 	/**
 	 * Get the player in this map.
 	 * 
-	 * @return
+	 * @returns
 	 */
 	public BDPlayer getPlayer() {
 		return player;
+	}
+	
+	
+	/**
+	 * Get the bullet in this map.
+	 * 
+	 * @returns
+	 */
+	public BDProjectile getProjectile() {
+		return bullet;
 	}
 
 	/**
@@ -327,12 +342,12 @@ public class BDMap {
 	// setter kun step metoden.
 	public void step() {
 
-		for (int x = 0; x < getWidth(); x++) {
-			for (int y = 0; y < getHeight(); y++) {
-				if(x<getWidth()-1 && y<getHeight()-1){
+		for (int x = 0; x < getWidth()-1; x++) {
+			for (int y = 0; y < getHeight()-1; y++) {
+			
 				getGrid().get(x, y).step();
 			
-				}
+				
 			}
 		}
 		

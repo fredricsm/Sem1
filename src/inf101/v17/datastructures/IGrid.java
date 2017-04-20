@@ -1,5 +1,11 @@
 package inf101.v17.datastructures;
 
+import java.util.Collection;
+
+import inf101.v17.boulderdash.Direction;
+import inf101.v17.boulderdash.Position;
+import inf101.v17.boulderdash.bdobjects.IBDObject;
+
 public interface IGrid<T> {
 
 	/**
@@ -49,4 +55,11 @@ public interface IGrid<T> {
 	 */
 	void set(int x, int y, T element);
 
+	T get(Position pos);
+	
+	
+	
+	
+	
+	
 }

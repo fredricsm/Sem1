@@ -26,11 +26,13 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	private static AudioClip diamondSound;
 	private static AudioClip stoneSound;
 	private static AudioClip splat;
+	private AudioClip laser;
 
 	private int countL = 1;
 	private int countR = 1;
 	private int countU = 1;
 	private int countD = 1;
+
 
 	// Hvordan returnere et nytt bilde for hvert tastetrykk?
 
@@ -43,16 +45,19 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 	 * The direction indicated by keypresses.
 	 */
 	protected Direction askedToGo;
-
+	protected Direction lastDir;
+	protected Direction dirForProjectile;
 	/**
 	 * Number of diamonds collected so far.
 	 */
 	protected int diamondCnt = 0;
+	protected int sandCnt = 0;
 
 	public BDPlayer(BDMap owner) {
 		super(owner);
 
 	}
+
 	/**
 	 * A method containing all sound and images used for the player.
 	 */
@@ -62,8 +67,19 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		playerColor = new ImagePattern(imageR, 0, 0, 8, 3, true);
 		moveSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/slime4.wav").toString());
 		diamondSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/coin.wav").toString());
-		stoneSound = new AudioClip(getClass().getResource("../bdobjects/soundEffects/ConcreteBlockMoving.wav").toString());
+		stoneSound = new AudioClip(
+				getClass().getResource("../bdobjects/soundEffects/ConcreteBlockMoving.wav").toString());
 		splat = new AudioClip(getClass().getResource("../bdobjects/soundEffects/Splat.wav").toString());
+		laser = new AudioClip(getClass().getResource("../bdobjects/soundEffects/laser.wav").toString());
+		;
+	}
+
+	public Direction getLastDir() {
+		return lastDir;
+	}
+
+	public Direction dirForProjectile() {
+		return dirForProjectile;
 
 	}
 
@@ -118,6 +134,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 					}
 				}
 			}
+			lastDir = Direction.WEST;
 		}
 
 		else if (key == KeyCode.RIGHT) {
@@ -149,6 +166,8 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 					}
 				}
 			}
+			lastDir = Direction.EAST;
+
 		}
 
 		else if (key == KeyCode.UP) {
@@ -171,6 +190,7 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 					}
 				}
 			}
+			lastDir = Direction.NORTH;
 
 		} else if (key == KeyCode.DOWN) {
 
@@ -192,7 +212,78 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 					}
 				}
 			}
+			lastDir = Direction.SOUTH;
+
 		}
+	
+		 else if (key == KeyCode.SPACE) {
+
+			 if (sandCnt > 0) {
+					System.out.println("Pew Pew");
+
+					if (lastDir == Direction.EAST) {
+						BDProjectile newBullet = new BDProjectile(owner);
+						newBullet.setDir(Direction.EAST);
+						getMap().set(getX() + 1, getY(), newBullet);
+						
+//						dirForProjectile = Direction.EAST;
+						laser.setVolume(0.2);
+						laser.play();
+						System.out.println(lastDir);
+					}
+
+					else if (lastDir == Direction.WEST) {
+						
+						BDProjectile newBullet = new BDProjectile(owner);
+						newBullet.setDir(Direction.WEST);
+						getMap().set(getX() - 1, getY(), newBullet);
+						try {
+							getMap().getProjectile().prepareMoveTo(dirForProjectile);
+						} catch (IllegalMoveException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						dirForProjectile = Direction.WEST;
+						laser.setVolume(0.2);
+						laser.play();
+						System.out.println(lastDir);
+					}
+
+					else if (lastDir == Direction.NORTH) {
+						BDProjectile newBullet = new BDProjectile(owner);
+						newBullet.setDir(Direction.NORTH);
+						getMap().set(getX() , getY()+1, newBullet);
+
+						dirForProjectile = Direction.NORTH;
+						laser.setVolume(0.2);
+						laser.play();
+						System.out.println(lastDir);
+					}
+					else if (lastDir == Direction.SOUTH) {
+						dirForProjectile = Direction.SOUTH;
+						
+						
+						BDProjectile newBullet = new BDProjectile(owner);
+						newBullet.setDir(Direction.SOUTH);
+						getMap().set(getX() , getY()-1, newBullet);
+						
+						laser.setVolume(0.2);
+						laser.play();
+						System.out.println(lastDir);
+					}
+					sandCnt -= 1;
+				}
+
+
+			 
+			 
+			 
+			}
+	
+	
+	
+	
 	}
 
 	@Override
@@ -215,18 +306,20 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 		return diamondCnt;
 	}
 
+	public int numberOfSand() {
+		return sandCnt;
+	}
+
 	/**
 	 * Method is modified
 	 */
 	@Override
 	public void step() {
-
 		if (askedToGo != null) {
 
 			Position p = getNextPosition();
 			Position nextpos = p.moveDirection(askedToGo);
 			IBDObject targetObj = owner.get(nextpos);
-
 			if (owner.canGo(p, askedToGo) == true) {
 
 				try {
@@ -246,15 +339,15 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 						prepareMoveTo(askedToGo);
 						moveSound.setVolume(0.1);
 						moveSound.play();
-					}
+						sandCnt += 1;
 
+					}
 
 					else if (targetObj instanceof BDDoor) {
 						prepareMoveTo(askedToGo);
 						moveSound.setVolume(0.1);
 						moveSound.play();
-					}
-					else if (targetObj instanceof BDEmpty) {
+					} else if (targetObj instanceof BDEmpty) {
 						prepareMoveTo(askedToGo);
 						moveSound.setVolume(0.1);
 						moveSound.play();
@@ -266,7 +359,6 @@ public class BDPlayer extends AbstractBDMovingObject implements IBDKillable {
 						diamondSound.play();
 						diamondCnt += 1;
 					}
-
 				} catch (IllegalMoveException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

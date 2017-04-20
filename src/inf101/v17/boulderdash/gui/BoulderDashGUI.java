@@ -1,14 +1,12 @@
 package inf101.v17.boulderdash.gui;
 
 
-import inf101.v17.boulderdash.Main;
 import inf101.v17.boulderdash.bdobjects.BDDiamond;
 import inf101.v17.boulderdash.bdobjects.BDDoor;
 import inf101.v17.boulderdash.bdobjects.BDWall;
 import inf101.v17.boulderdash.maps.BDMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -140,7 +138,7 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 	protected void step() {
 		if (map.getPlayer().isAlive()) {
 			map.step();
-			message.setText("Diamonds: " + map.getPlayer().numberOfDiamonds());
+			message.setText(("Diamonds: " + map.getPlayer().numberOfDiamonds()) + ( "   Sand: " + map.getPlayer().numberOfSand()));
 
 			if (map.getPlayer().getPosition() == null) {
 			 message.setText("Congratulations");
@@ -164,7 +162,12 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 			System.exit(0);
 		} else if (code == KeyCode.F) {
 			stage.setFullScreen(!stage.isFullScreen());
-		} 
+		}
+//		else if(code == KeyCode.SPACE){
+//			map.getPlayer().fireWeapon();		
+//			}
+			
+		 
 //Update late with functionality for relaunching map.
 //		else if (code == KeyCode.L) {
 //			Platform.exit();
@@ -172,7 +175,6 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 //			Main.main(args);
 //		}
 //		
-		
 		else {
 
 			map.getPlayer().keyPressed(code);
