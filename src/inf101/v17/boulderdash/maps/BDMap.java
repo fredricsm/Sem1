@@ -3,6 +3,7 @@ package inf101.v17.boulderdash.maps;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import inf101.v17.boulderdash.Direction;
@@ -41,7 +42,7 @@ public class BDMap {
 	 * frequently.
 	 */
 	protected BDPlayer player;
-	
+	private HashMap<IBDObject, Position> hMap;
 	protected BDProjectile bullet;
 //	Not implemented
 //	Map<IBDObject, Position> posOverview = new HashMap<>();
