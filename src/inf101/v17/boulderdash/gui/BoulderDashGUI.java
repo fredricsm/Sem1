@@ -1,6 +1,5 @@
 package inf101.v17.boulderdash.gui;
 
-
 import inf101.v17.boulderdash.bdobjects.BDDiamond;
 import inf101.v17.boulderdash.bdobjects.BDDoor;
 import inf101.v17.boulderdash.bdobjects.BDWall;
@@ -124,31 +123,33 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 				}
 			}
 		}
-		if (nrDia == 0) {
-			// System.exit(0);
-			map.set(39, 3, new BDDoor(map));
-		}
+		if (map.getWidth() >= 39) {
+			if (nrDia == 0) {
+				// System.exit(0);
+				map.set(39, 3, new BDDoor(map));
+			}
 
-		else if (nrDia != 0) {
-			map.set(39, 3, new BDWall(map));
+			else if (nrDia != 0) {
+				map.set(39, 3, new BDWall(map));
+			}
 		}
 	}
 
-	
 	protected void step() {
 		if (map.getPlayer().isAlive()) {
 			map.step();
-			message.setText(("Diamonds: " + map.getPlayer().numberOfDiamonds()) + ( "   Sand: " + map.getPlayer().numberOfSand()));
+			message.setText(("Diamonds: " + map.getPlayer().numberOfDiamonds())
+					+ ("   Sand: " + map.getPlayer().numberOfSand()));
 
 			if (map.getPlayer().getPosition() == null) {
-			 message.setText("Congratulations");
-				
+				message.setText("Congratulations");
+
 			}
 		}
 
 		else {
 			message.setText("Player is dead.");
-			//System.exit(0);
+			// System.exit(0);
 
 		}
 		newGame();
@@ -163,18 +164,17 @@ public class BoulderDashGUI extends Application implements EventHandler<KeyEvent
 		} else if (code == KeyCode.F) {
 			stage.setFullScreen(!stage.isFullScreen());
 		}
-//		else if(code == KeyCode.SPACE){
-//			map.getPlayer().fireWeapon();		
-//			}
-			
-		 
-//Update late with functionality for relaunching map.
-//		else if (code == KeyCode.L) {
-//			Platform.exit();
-//			String[] args = {};
-//			Main.main(args);
-//		}
-//		
+		// else if(code == KeyCode.SPACE){
+		// map.getPlayer().fireWeapon();
+		// }
+
+		// Update late with functionality for relaunching map.
+		// else if (code == KeyCode.L) {
+		// Platform.exit();
+		// String[] args = {};
+		// Main.main(args);
+		// }
+		//
 		else {
 
 			map.getPlayer().keyPressed(code);
